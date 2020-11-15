@@ -5,13 +5,13 @@
 <web-app>
   <display-name>Archetype Created Web Application</display-name>
   <servlet>
-  	<servlet-name>HelloWorldServlet</servlet-name>
-  	<display-name>HelloWorldServlet</display-name>
+  	<servlet-name>Login</servlet-name>
+  	<display-name>Login</display-name>
   	<description></description>
-  	<servlet-class>web.cms.HelloWorldServlet</servlet-class>
+  	<servlet-class>web.cms.Login</servlet-class>
   </servlet>
   <servlet-mapping>
-  	<servlet-name>HelloWorldServlet</servlet-name>
-  	<url-pattern>/HelloWorldServlet</url-pattern>
+  	<servlet-name>Login</servlet-name>
+  	<url-pattern>/Login</url-pattern>
   </servlet-mapping>
 </web-app>
