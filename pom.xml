@@ -38,6 +38,14 @@
             <version>2.0</version>
             <scope>provided</scope>
         </dependency>
+	<!-- https://mvnrepository.com/artifact/org.mongodb/mongo-java-driver -->
+	<dependency>
+	<groupId>org.mongodb</groupId>
+		<artifactId>mongo-java-driver</artifactId>
+	<version>3.12.7</version>
+	<scope>provided</scope>
+	</dependency>
+
   </dependencies>
 
   <build>
