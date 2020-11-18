@@ -2,16 +2,20 @@
  "-//Sun Microsystems, Inc.//DTD Web Application 2.3//EN"
  "http://java.sun.com/dtd/web-app_2_3.dtd" >
 
-<web-app>
-  <display-name>Archetype Created Web Application</display-name>
-  <servlet>
-  	<servlet-name>page</servlet-name>
-  	<display-name>page</display-name>
-  	<description></description>
-  	<servlet-class>web.cms.page</servlet-class>
-  </servlet>
-  <servlet-mapping>
-  	<servlet-name>page</servlet-name>
-  	<url-pattern>/page</url-pattern>
-  </servlet-mapping>
+<web-app id="WebApp_ID">
+	<display-name>cms</display-name>
+
+	<servlet>
+		<servlet-name>login</servlet-name>
+		<servlet-class>LoginCheck</servlet-class>
+	</servlet>
+
+	<servlet-mapping>
+		<servlet-name>login</servlet-name>
+		<url-pattern>/welcome</url-pattern>
+	</servlet-mapping>
+
+	<welcome-file-list>
+		<welcome-file>loginForm.jsp</welcome-file>
+	</welcome-file-list>
 </web-app>
