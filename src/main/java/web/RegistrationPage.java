@@ -34,8 +34,6 @@ public class RegistrationPage extends HttpServlet {
 		 System.out.println("Parameter Name - "+paramName+", Value - "+request.getParameter(paramName));
 		}
 		
-		//not sure why this doesn't include the accountType field
-		
 		RequestDispatcher view = request.getRequestDispatcher("/");
 		view.forward(request, response);
 	}

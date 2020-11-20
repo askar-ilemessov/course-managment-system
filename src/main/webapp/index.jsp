@@ -65,20 +65,27 @@ button:hover {
 </head>
 <body>
 
-	<form>
+	<form role="form" action="home" method="post">
 		<div class="logo">
 			<img src="logo.png" alt="logo">
 		</div>
 
 		<div class="card">
-			<div class="alert alert-danger" id="error" role="alert" style="display:none">
+			<div class="alert alert-danger" id="error" role="alert"
+				style="display: none">
 				<strong>Incorrect Login.</strong> Try Again.
 			</div>
-			<label for="uname"><b>Username</b></label> <input type="text"
-				placeholder="Enter Username" name="uname" required> <label
-				for="psw"><b>Password</b></label> <input type="password"
-				placeholder="Enter Password" name="psw" required>
-			<button formaction="/cms/mainPage" type="submit" name="login">Login</button>
+			<label for="uname"><b>Username</b></label>
+			<div class="form-group">
+				<input type="text" placeholder="Enter Username" name="uname"
+					required>
+			</div>
+			<label for="psw"><b>Password</b></label>
+			<div class="form-group">
+				<input type="password" placeholder="Enter Password" name="psw"
+					required>
+			</div>
+			<button type="submit" name="login">Login</button>
 			<label> <input type="checkbox" checked="checked"
 				name="remember"> Remember me
 			</label>
