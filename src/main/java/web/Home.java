@@ -37,10 +37,13 @@ public class Home extends HttpServlet {
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		// logic for login verification here
+
+		
 		// Create a session object
 		HttpSession session = request.getSession(true);
+		session.setAttribute("userid", request.getParameter("uname"));
 		
-		// logic for login verification here
 		doGet(request, response);
 	}
 
