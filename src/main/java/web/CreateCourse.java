@@ -42,9 +42,9 @@ public class CreateCourse extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-
-		response.setContentType("text/html");
-		PrintWriter out = response.getWriter();
+		
+		RequestDispatcher view = request.getRequestDispatcher("/ManageApplications.html");
+		view.forward(request, response);
 	}
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
@@ -59,9 +59,6 @@ public class CreateCourse extends HttpServlet {
 		} catch (Exception e) {
 			System.out.println("Failed to Connected" + e);
 		}
-
-		RequestDispatcher view = request.getRequestDispatcher("/");
-		view.forward(request, response);
 		
 		String course_name = request.getParameter("course_name");
 		String course_code = request.getParameter("course_code");
