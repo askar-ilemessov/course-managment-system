@@ -71,10 +71,11 @@ button:hover {
 		</div>
 
 		<div class="card">
-			<div class="alert alert-danger" id="error" role="alert"
-				style="display: none">
+		 <% if (request.getAttribute("showError") == "true") { %>
+         <div class="alert alert-danger" id="error" role="alert">
 				<strong>Incorrect Login.</strong> Try Again.
 			</div>
+      		<% } %>
 			<label for="uname"><b>Username</b></label>
 			<div class="form-group">
 				<input type="text" placeholder="Enter Username" name="uname"
