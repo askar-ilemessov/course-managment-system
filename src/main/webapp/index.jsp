@@ -95,6 +95,10 @@ button:hover {
 			<div>
 				Don't have an account? <a href="/cms/RegistrationPage.html">Register</a>
 			</div>
+			<div>	
+				Create Course? <a href="/cms/createCourse.html">Create Course</a>
+			</div>
+			
 		</div>
 	</form>
 
