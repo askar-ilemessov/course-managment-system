@@ -37,9 +37,9 @@ body {
 				</div>
 				<div class="col-6">
 					<div class="py-2" style="float: right;">
-						<a href="#addEmployeeModal" class="btn btn-primary"
+						<button class="btn btn-primary" name = "viewApplications"
 							data-toggle="modal"><i class="fa fa-user"></i><span>
-								View Applications</span></a>
+								View Applications</span></button>
 					</div>
 
 				</div>
@@ -66,7 +66,7 @@ body {
 					<td>email@email</td>
 					<td>Student</td>
 					<td>(480) 631-2097</td>
-					<td><button type="button" class="btn btn-danger"
+					<td><button type="button" class="btn btn-danger" name ="deleteButton"
 							data-toggle="modal" data-target="#deleteModal">
 							<i class="fa fa-trash" data-toggle="tooltip" title="Delete"></i>
 						</button></td>
@@ -93,7 +93,7 @@ body {
 					<div class="modal-footer">
 						<input type="button" class="btn btn-default" data-dismiss="modal"
 							value="Cancel"> <input type="submit"
-							class="btn btn-danger" value="Delete">
+							class="btn btn-danger" name="deleteConfirm" value="Delete">
 					</div>
 				</form>
 			</div>
