@@ -1,0 +1,112 @@
+# Created at 2020-11-29T16:33:10.764
+TestSet has not finished before stream error has appeared >> initializing exit by non-null configuration: DEFAULT
+java.io.EOFException
+	at java.base/java.io.DataInputStream.readInt(DataInputStream.java:397)
+	at org.apache.maven.surefire.booter.MasterProcessCommand.decode(MasterProcessCommand.java:115)
+	at org.apache.maven.surefire.booter.CommandReader$CommandRunnable.run(CommandReader.java:391)
+	at java.base/java.lang.Thread.run(Thread.java:830)
+
+
+# Created at 2020-11-29T16:33:12.018
+Unexpected IOException with stream: Nov. 29, 2020 4:33:12 P.M. com.mongodb.diagnostics.logging.JULLogger log
+INFO: Opened connection [connectionId{localValue:6, serverValue:386731}] to cluster0-shard-00-01.bwy7e.mongodb.net:27017
+
+
+# Created at 2020-11-29T16:33:12.021
+Unexpected IOException with stream: Nov. 29, 2020 4:33:12 P.M. com.mongodb.diagnostics.logging.JULLogger log
+INFO: Opened connection [connectionId{localValue:1, serverValue:386879}] to cluster0-shard-00-00.bwy7e.mongodb.net:27017
+
+
+# Created at 2020-11-29T16:33:12.024
+Unexpected IOException with stream: Nov. 29, 2020 4:33:12 P.M. com.mongodb.diagnostics.logging.JULLogger log
+INFO: Opened connection [connectionId{localValue:4, serverValue:386879}] to cluster0-shard-00-00.bwy7e.mongodb.net:27017
+
+
+# Created at 2020-11-29T16:33:12.027
+Unexpected IOException with stream: Nov. 29, 2020 4:33:12 P.M. com.mongodb.diagnostics.logging.JULLogger log
+INFO: Opened connection [connectionId{localValue:2, serverValue:386731}] to cluster0-shard-00-01.bwy7e.mongodb.net:27017
+
+
+# Created at 2020-11-29T16:33:12.030
+Unexpected IOException with stream: Nov. 29, 2020 4:33:12 P.M. com.mongodb.diagnostics.logging.JULLogger log
+INFO: Opened connection [connectionId{localValue:3, serverValue:480434}] to cluster0-shard-00-02.bwy7e.mongodb.net:27017
+
+
+# Created at 2020-11-29T16:33:12.033
+Unexpected IOException with stream: Nov. 29, 2020 4:33:12 P.M. com.mongodb.diagnostics.logging.JULLogger log
+INFO: Opened connection [connectionId{localValue:5, serverValue:480434}] to cluster0-shard-00-02.bwy7e.mongodb.net:27017
+
+
+# Created at 2020-11-29T16:33:12.305
+Unexpected IOException with stream: Nov. 29, 2020 4:33:12 P.M. com.mongodb.diagnostics.logging.JULLogger log
+INFO: Monitor thread successfully connected to server with description ServerDescription{address=cluster0-shard-00-00.bwy7e.mongodb.net:27017, type=REPLICA_SET_SECONDARY, state=CONNECTED, ok=true, version=ServerVersion{versionList=[4, 2, 10]}, minWireVersion=0, maxWireVersion=8, maxDocumentSize=16777216, logicalSessionTimeoutMinutes=30, roundTripTimeNanos=272900899, setName='atlas-89osk9-shard-0', canonicalAddress=cluster0-shard-00-00.bwy7e.mongodb.net:27017, hosts=[cluster0-shard-00-00.bwy7e.mongodb.net:27017, cluster0-shard-00-02.bwy7e.mongodb.net:27017, cluster0-shard-00-01.bwy7e.mongodb.net:27017], passives=[], arbiters=[], primary='cluster0-shard-00-02.bwy7e.mongodb.net:27017', tagSet=TagSet{[Tag{name='nodeType', value='ELECTABLE'}, Tag{name='provider', value='AWS'}, Tag{name='region', value='US_EAST_1'}, Tag{name='workloadType', value='OPERATIONAL'}]}, electionId=null, setVersion=1, lastWriteDate=Sun Nov 29 16:33:12 EST 2020, lastUpdateTimeNanos=1090036547996599}
+
+
+# Created at 2020-11-29T16:33:12.307
+Unexpected IOException with stream: Nov. 29, 2020 4:33:12 P.M. com.mongodb.diagnostics.logging.JULLogger log
+INFO: Monitor thread successfully connected to server with description ServerDescription{address=cluster0-shard-00-01.bwy7e.mongodb.net:27017, type=REPLICA_SET_SECONDARY, state=CONNECTED, ok=true, version=ServerVersion{versionList=[4, 2, 10]}, minWireVersion=0, maxWireVersion=8, maxDocumentSize=16777216, logicalSessionTimeoutMinutes=30, roundTripTimeNanos=268891600, setName='atlas-89osk9-shard-0', canonicalAddress=cluster0-shard-00-01.bwy7e.mongodb.net:27017, hosts=[cluster0-shard-00-00.bwy7e.mongodb.net:27017, cluster0-shard-00-02.bwy7e.mongodb.net:27017, cluster0-shard-00-01.bwy7e.mongodb.net:27017], passives=[], arbiters=[], primary='cluster0-shard-00-02.bwy7e.mongodb.net:27017', tagSet=TagSet{[Tag{name='nodeType', value='ELECTABLE'}, Tag{name='provider', value='AWS'}, Tag{name='region', value='US_EAST_1'}, Tag{name='workloadType', value='OPERATIONAL'}]}, electionId=null, setVersion=1, lastWriteDate=Sun Nov 29 16:33:12 EST 2020, lastUpdateTimeNanos=1090036547150800}
+
+
+# Created at 2020-11-29T16:33:12.309
+Unexpected IOException with stream: Nov. 29, 2020 4:33:12 P.M. com.mongodb.diagnostics.logging.JULLogger log
+INFO: Monitor thread successfully connected to server with description ServerDescription{address=cluster0-shard-00-02.bwy7e.mongodb.net:27017, type=REPLICA_SET_PRIMARY, state=CONNECTED, ok=true, version=ServerVersion{versionList=[4, 2, 10]}, minWireVersion=0, maxWireVersion=8, maxDocumentSize=16777216, logicalSessionTimeoutMinutes=30, roundTripTimeNanos=263271600, setName='atlas-89osk9-shard-0', canonicalAddress=cluster0-shard-00-02.bwy7e.mongodb.net:27017, hosts=[cluster0-shard-00-00.bwy7e.mongodb.net:27017, cluster0-shard-00-02.bwy7e.mongodb.net:27017, cluster0-shard-00-01.bwy7e.mongodb.net:27017], passives=[], arbiters=[], primary='cluster0-shard-00-02.bwy7e.mongodb.net:27017', tagSet=TagSet{[Tag{name='nodeType', value='ELECTABLE'}, Tag{name='provider', value='AWS'}, Tag{name='region', value='US_EAST_1'}, Tag{name='workloadType', value='OPERATIONAL'}]}, electionId=7fffffff0000000000000004, setVersion=1, lastWriteDate=Sun Nov 29 16:33:12 EST 2020, lastUpdateTimeNanos=1090036551146399}
+
+
+# Created at 2020-11-29T16:33:12.311
+Unexpected IOException with stream: Nov. 29, 2020 4:33:12 P.M. com.mongodb.diagnostics.logging.JULLogger log
+INFO: Monitor thread successfully connected to server with description ServerDescription{address=cluster0-shard-00-01.bwy7e.mongodb.net:27017, type=REPLICA_SET_SECONDARY, state=CONNECTED, ok=true, version=ServerVersion{versionList=[4, 2, 10]}, minWireVersion=0, maxWireVersion=8, maxDocumentSize=16777216, logicalSessionTimeoutMinutes=30, roundTripTimeNanos=274429301, setName='atlas-89osk9-shard-0', canonicalAddress=cluster0-shard-00-01.bwy7e.mongodb.net:27017, hosts=[cluster0-shard-00-00.bwy7e.mongodb.net:27017, cluster0-shard-00-02.bwy7e.mongodb.net:27017, cluster0-shard-00-01.bwy7e.mongodb.net:27017], passives=[], arbiters=[], primary='cluster0-shard-00-02.bwy7e.mongodb.net:27017', tagSet=TagSet{[Tag{name='nodeType', value='ELECTABLE'}, Tag{name='provider', value='AWS'}, Tag{name='region', value='US_EAST_1'}, Tag{name='workloadType', value='OPERATIONAL'}]}, electionId=null, setVersion=1, lastWriteDate=Sun Nov 29 16:33:12 EST 2020, lastUpdateTimeNanos=1090036545079900}
+
+
+# Created at 2020-11-29T16:33:12.312
+Unexpected IOException with stream: Nov. 29, 2020 4:33:12 P.M. com.mongodb.diagnostics.logging.JULLogger log
+INFO: Monitor thread successfully connected to server with description ServerDescription{address=cluster0-shard-00-02.bwy7e.mongodb.net:27017, type=REPLICA_SET_PRIMARY, state=CONNECTED, ok=true, version=ServerVersion{versionList=[4, 2, 10]}, minWireVersion=0, maxWireVersion=8, maxDocumentSize=16777216, logicalSessionTimeoutMinutes=30, roundTripTimeNanos=266000301, setName='atlas-89osk9-shard-0', canonicalAddress=cluster0-shard-00-02.bwy7e.mongodb.net:27017, hosts=[cluster0-shard-00-00.bwy7e.mongodb.net:27017, cluster0-shard-00-02.bwy7e.mongodb.net:27017, cluster0-shard-00-01.bwy7e.mongodb.net:27017], passives=[], arbiters=[], primary='cluster0-shard-00-02.bwy7e.mongodb.net:27017', tagSet=TagSet{[Tag{name='nodeType', value='ELECTABLE'}, Tag{name='provider', value='AWS'}, Tag{name='region', value='US_EAST_1'}, Tag{name='workloadType', value='OPERATIONAL'}]}, electionId=7fffffff0000000000000004, setVersion=1, lastWriteDate=Sun Nov 29 16:33:12 EST 2020, lastUpdateTimeNanos=1090036547113800}
+
+
+# Created at 2020-11-29T16:33:12.315
+Unexpected IOException with stream: Nov. 29, 2020 4:33:12 P.M. com.mongodb.diagnostics.logging.JULLogger log
+INFO: Monitor thread successfully connected to server with description ServerDescription{address=cluster0-shard-00-00.bwy7e.mongodb.net:27017, type=REPLICA_SET_SECONDARY, state=CONNECTED, ok=true, version=ServerVersion{versionList=[4, 2, 10]}, minWireVersion=0, maxWireVersion=8, maxDocumentSize=16777216, logicalSessionTimeoutMinutes=30, roundTripTimeNanos=272710601, setName='atlas-89osk9-shard-0', canonicalAddress=cluster0-shard-00-00.bwy7e.mongodb.net:27017, hosts=[cluster0-shard-00-00.bwy7e.mongodb.net:27017, cluster0-shard-00-02.bwy7e.mongodb.net:27017, cluster0-shard-00-01.bwy7e.mongodb.net:27017], passives=[], arbiters=[], primary='cluster0-shard-00-02.bwy7e.mongodb.net:27017', tagSet=TagSet{[Tag{name='nodeType', value='ELECTABLE'}, Tag{name='provider', value='AWS'}, Tag{name='region', value='US_EAST_1'}, Tag{name='workloadType', value='OPERATIONAL'}]}, electionId=null, setVersion=1, lastWriteDate=Sun Nov 29 16:33:12 EST 2020, lastUpdateTimeNanos=1090036545080100}
+
+
+# Created at 2020-11-29T16:33:12.317
+Unexpected IOException with stream: Nov. 29, 2020 4:33:12 P.M. com.mongodb.diagnostics.logging.JULLogger log
+INFO: Setting max election id to 7fffffff0000000000000004 from replica set primary cluster0-shard-00-02.bwy7e.mongodb.net:27017
+
+
+# Created at 2020-11-29T16:33:12.319
+Unexpected IOException with stream: Nov. 29, 2020 4:33:12 P.M. com.mongodb.diagnostics.logging.JULLogger log
+INFO: Setting max election id to 7fffffff0000000000000004 from replica set primary cluster0-shard-00-02.bwy7e.mongodb.net:27017
+
+
+# Created at 2020-11-29T16:33:12.320
+Unexpected IOException with stream: Nov. 29, 2020 4:33:12 P.M. com.mongodb.diagnostics.logging.JULLogger log
+INFO: Setting max set version to 1 from replica set primary cluster0-shard-00-02.bwy7e.mongodb.net:27017
+
+
+# Created at 2020-11-29T16:33:12.322
+Unexpected IOException with stream: Nov. 29, 2020 4:33:12 P.M. com.mongodb.diagnostics.logging.JULLogger log
+INFO: Setting max set version to 1 from replica set primary cluster0-shard-00-02.bwy7e.mongodb.net:27017
+
+
+# Created at 2020-11-29T16:33:12.324
+Unexpected IOException with stream: Nov. 29, 2020 4:33:12 P.M. com.mongodb.diagnostics.logging.JULLogger log
+INFO: Discovered replica set primary cluster0-shard-00-02.bwy7e.mongodb.net:27017
+
+
+# Created at 2020-11-29T16:33:12.325
+Unexpected IOException with stream: Nov. 29, 2020 4:33:12 P.M. com.mongodb.diagnostics.logging.JULLogger log
+INFO: Discovered replica set primary cluster0-shard-00-02.bwy7e.mongodb.net:27017
+
+
+# Created at 2020-11-29T16:33:14.193
+Unexpected IOException with stream: Nov. 29, 2020 4:33:14 P.M. org.openqa.selenium.remote.ProtocolHandshake createSession
+INFO: Detected dialect: W3C
+
+
+# Created at 2020-11-29T16:33:15.732
+Unexpected IOException: 6,1,selenium.LoginWebPageTest,test(selenium.LoginWebPageTest),null,null,null
+
+
+# Created at 2020-11-29T16:33:15.735
+Unexpected IOException: 2,1,org.apache.maven.surefire.junit4.JUnit4Provider,selenium.LoginWebPageTest,null,null,null
+
+

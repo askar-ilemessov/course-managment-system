@@ -33,7 +33,6 @@ public class Home extends HttpServlet {
 	private static MongoClientURI connectionString = new MongoClientURI(
 			"mongodb+srv://admin:admin@cluster0.bwy7e.mongodb.net/CMS?retryWrites=true&w=majority");
 	private static MongoDatabase database = null;
-	
 	private static final long serialVersionUID = 1L;
        
     /**
@@ -57,17 +56,6 @@ public class Home extends HttpServlet {
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
-		try {
-			// database connection
-			mongoClient = new MongoClient(connectionString);
-			database = mongoClient.getDatabase("CMS");
-
-			System.out.println("Successfully Connected" + " to the database");
-		} catch (Exception e) {
-			System.out.println("Failed to Connected" + e);
-
-		}
-
 		// send application here
 //		Enumeration<String> params = request.getParameterNames();
 //		while (params.hasMoreElements()) {
@@ -78,10 +66,51 @@ public class Home extends HttpServlet {
 		String uname = request.getParameter("uname");
 		String psw = request.getParameter("psw");
 
+		if (checkLoginCredentials(uname, psw)) {
+			System.out.println("Successfully logged in as " + uname);
+			
+			try {
+				MongoCollection<Document> accounts = database.getCollection("users");
+				mongoClient.close();
+				request.setAttribute("accounts", accounts);
+
+			} catch (Exception e) {
+				
+			}
+			// Create a session object
+			HttpSession session = request.getSession(true);
+			session.setAttribute("userid", request.getParameter("uname"));
+					
+			RequestDispatcher view = request.getRequestDispatcher("/ManageApplications.jsp");
+			view.forward(request, response);
+		} else {
+			request.setAttribute("showError", "true");
+			RequestDispatcher view = request.getRequestDispatcher("/index.jsp");
+			view.forward(request, response);
+		}
+
+		// System.out.println(" " + name + " lastname" + " " + email + " "+ accType);
+		
+		//doGet(request, response);
+	}
+
+	public boolean checkLoginCredentials(String uname, String psw) {
 		try {
-			MongoCollection<Document> accounts = database.getCollection("users");
+				try {
+					// database connection
+					mongoClient = new MongoClient(connectionString);
+					database = mongoClient.getDatabase("CMS");
 	
-			  BasicDBObject query = new BasicDBObject();
+					System.out.println("Successfully Connected" + " to the database");
+					mongoClient.close();
+				} catch (Exception e) {
+					System.out.println("Failed to Connected" + e);
+	
+				}
+
+				MongoCollection<Document> accounts = database.getCollection("users");
+
+				BasicDBObject query = new BasicDBObject();
 			    List<BasicDBObject> obj = new ArrayList<BasicDBObject>();
 			    obj.add(new BasicDBObject("name", uname));
 			    obj.add(new BasicDBObject("password", psw));
@@ -96,31 +125,16 @@ public class Home extends HttpServlet {
 					}
 					
 					if (count > 0) {
-						System.out.println("Successfully logged in as " + uname);
-						
-						// Create a session object
-						HttpSession session = request.getSession(true);
-						session.setAttribute("userid", request.getParameter("uname"));
-						
-						RequestDispatcher view = request.getRequestDispatcher("/ManageApplications.html");
-						view.forward(request, response);
+						return true;
 					} else {
-						//also this should produce error message
-						request.setAttribute("showError", "true");
-						RequestDispatcher view = request.getRequestDispatcher("/index.jsp");
-						view.forward(request, response);
+						return false;
 					}
 				}
 
 		} catch (Exception e) {
 			System.out.println("Unsuccessfully" + e);
 		}
-		
-		mongoClient.close();
-
-		// System.out.println(" " + name + " lastname" + " " + email + " "+ accType);
-		
-		//doGet(request, response);
+		return false;
 	}
 
 }

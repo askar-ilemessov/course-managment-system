@@ -58,6 +58,7 @@ body {
 						</div>
 					</div>
 				</div>
+				<% System.out.println(request.getAttribute("accounts"));%>
 				<table class="table table-striped table-hover">
 					<thead class="thead-dark">
 						<tr align="center">
