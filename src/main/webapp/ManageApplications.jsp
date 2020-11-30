@@ -1,3 +1,5 @@
+<%@page import="java.util.ArrayList"%>
+<%@page import="org.bson.Document"%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -58,7 +60,7 @@ body {
 						</div>
 					</div>
 				</div>
-				<% System.out.println(request.getAttribute("accounts"));%>
+				<%! String deleteDoc ="null"; %>
 				<table class="table table-striped table-hover">
 					<thead class="thead-dark">
 						<tr align="center">
@@ -71,21 +73,25 @@ body {
 						</tr>
 					</thead>
 					<tbody>
+						<%ArrayList<Document> std = (ArrayList<Document>)request.getAttribute("accounts"); 
+        				for(Document s:std){%>
 						<tr align="center">
 							<td><span class="custom-checkbox"> <input
 									type="checkbox" id="checkbox5" name="options[]" value="1">
 									<label for="checkbox5"></label>
 							</span></td>
-							<td>student mc student</td>
-							<td>email@email</td>
-							<td>Student</td>
+							<td><%=s.get("name")%></td>
+							<td><%=s.get("_id")%></td>
+							<td><%=s.get("password")%></td>
 							<td>(480) 631-2097</td>
 							<td><button type="button" class="btn btn-danger"
 									name="deleteButton" data-toggle="modal"
-									data-target="#deleteModal">
+									data-target="#deleteModal" onclick="<%deleteDoc=s.get("_id").toString();%>">		
 									<i class="fa fa-trash" data-toggle="tooltip" title="Delete"></i>
-								</button></td>
+								</button>
+							</td>
 						</tr>
+						<%}%>
 					</tbody>
 				</table>
 			</div>
@@ -142,7 +148,7 @@ body {
 	<div id="deleteModal" class="modal fade">
 		<div class="modal-dialog">
 			<div class="modal-content">
-				<form>
+				<form role="form" action="home" method="post">
 					<div class="modal-header">
 						<h4 class="modal-title">Delete Account</h4>
 						<button type="button" class="close" data-dismiss="modal"
@@ -153,6 +159,10 @@ body {
 						<p class="text-warning">
 							<small>This action cannot be undone.</small>
 						</p>
+					</div>
+					<div class=form-group>
+					<input type="text" class="form-control" id="deleteDoc"
+						name="deleteDoc" value="<%=deleteDoc%>">
 					</div>
 					<div class="modal-footer">
 						<input type="button" class="btn btn-default" data-dismiss="modal"

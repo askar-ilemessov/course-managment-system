@@ -2,6 +2,7 @@ package web;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Enumeration;
 import java.util.List;
 
 import javax.servlet.RequestDispatcher;
@@ -16,13 +17,13 @@ import org.bson.Document;
 import org.bson.types.ObjectId;
 
 import com.mongodb.BasicDBObject;
-import com.mongodb.DBCursor;
 import com.mongodb.MongoClient;
 import com.mongodb.MongoClientURI;
 import com.mongodb.client.FindIterable;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoCursor;
 import com.mongodb.client.MongoDatabase;
+import com.mongodb.client.model.Filters;
 
 /**
  * Servlet implementation class Home
@@ -49,6 +50,7 @@ public class Home extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
 		response.getWriter().append("Served at: ").append(request.getContextPath());
+		System.out.println("GET");
 	}
 
 	/**
@@ -56,42 +58,82 @@ public class Home extends HttpServlet {
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
-		// send application here
-//		Enumeration<String> params = request.getParameterNames();
-//		while (params.hasMoreElements()) {
-//			String paramName = params.nextElement();
-//			System.out.println("Parameter Name - " + paramName + ", Value - " + request.getParameter(paramName));
-//		}
+		System.out.println("POST");
+		
+		switch (getReqType(request)) {
+		//LOGIN AUTH
+		case "login":
+			String uname = request.getParameter("uname");
+			String psw = request.getParameter("psw");
 
-		String uname = request.getParameter("uname");
-		String psw = request.getParameter("psw");
+			if (checkLoginCredentials(uname, psw)) {
+				System.out.println("Successfully logged in as " + uname);
+				
+				try {
+					MongoCollection<Document> accounts = database.getCollection("users");
+					request.setAttribute("accounts", parseCollection(accounts));
 
-		if (checkLoginCredentials(uname, psw)) {
-			System.out.println("Successfully logged in as " + uname);
-			
+				} catch (Exception e) {
+					
+				}
+				// Create a session object
+				HttpSession session = request.getSession(true);
+				session.setAttribute("userid", request.getParameter("uname"));
+						
+				RequestDispatcher view = request.getRequestDispatcher("/ManageApplications.jsp");
+				view.forward(request, response);
+			} else {
+				request.setAttribute("showError", "true");
+				RequestDispatcher view = request.getRequestDispatcher("/index.jsp");
+				view.forward(request, response);
+			}
+			break;
+		//DELETE ACCOUNT
+		case "delete":
 			try {
+				System.out.println("here");
 				MongoCollection<Document> accounts = database.getCollection("users");
-				mongoClient.close();
-				request.setAttribute("accounts", accounts);
+
+				accounts.deleteOne(new Document("_id", new ObjectId(request.getParameter("deleteDoc"))));
+				request.setAttribute("accounts", parseCollection(accounts));
+				
+				RequestDispatcher view = request.getRequestDispatcher("/ManageApplications.jsp");
+				view.forward(request, response);
 
 			} catch (Exception e) {
 				
 			}
-			// Create a session object
-			HttpSession session = request.getSession(true);
-			session.setAttribute("userid", request.getParameter("uname"));
-					
-			RequestDispatcher view = request.getRequestDispatcher("/ManageApplications.jsp");
-			view.forward(request, response);
-		} else {
-			request.setAttribute("showError", "true");
-			RequestDispatcher view = request.getRequestDispatcher("/index.jsp");
-			view.forward(request, response);
+			break;
 		}
+	}
 
-		// System.out.println(" " + name + " lastname" + " " + email + " "+ accType);
-		
-		//doGet(request, response);
+	private String getReqType(HttpServletRequest request) {
+		try {
+//			Enumeration<String> params = request.getParameterNames();
+//			while (params.hasMoreElements()) {
+//				String paramName = params.nextElement();
+//				System.out.println("Parameter Name - " + paramName + ", Value - " + request.getParameter(paramName));
+//			}
+			if (request.getParameterMap().containsKey("login")) {
+				return "login";
+			} else if (request.getParameterMap().containsKey("deleteConfirm")) {
+				return "delete";
+			} 
+		} catch (Exception e) {
+			
+		}
+		return "";
+	}
+
+	private <T> Object parseCollection(MongoCollection<Document> accounts) {
+		// Retrieving the documents
+		ArrayList<Document> documents = new ArrayList<>();
+		FindIterable<Document> iterDoc = accounts.find();
+		MongoCursor<Document> it = iterDoc.iterator();
+		while (it.hasNext()) {
+			documents.add((Document) it.next());
+		}
+		return documents;
 	}
 
 	public boolean checkLoginCredentials(String uname, String psw) {
@@ -102,7 +144,6 @@ public class Home extends HttpServlet {
 					database = mongoClient.getDatabase("CMS");
 	
 					System.out.println("Successfully Connected" + " to the database");
-					mongoClient.close();
 				} catch (Exception e) {
 					System.out.println("Failed to Connected" + e);
 	
