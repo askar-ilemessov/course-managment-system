@@ -57,8 +57,6 @@ public class Home extends HttpServlet {
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-
-		System.out.println("POST");
 		
 		switch (getReqType(request)) {
 		//LOGIN AUTH
@@ -70,8 +68,7 @@ public class Home extends HttpServlet {
 				System.out.println("Successfully logged in as " + uname);
 				
 				try {
-					MongoCollection<Document> accounts = database.getCollection("users");
-					request.setAttribute("accounts", parseCollection(accounts));
+					refreshAttributes(request);
 
 				} catch (Exception e) {
 					
@@ -89,20 +86,40 @@ public class Home extends HttpServlet {
 			}
 			break;
 		//DELETE ACCOUNT
-		case "delete":
+		case "deleteAccount":
 			try {
-				System.out.println("here");
 				MongoCollection<Document> accounts = database.getCollection("users");
-
-				accounts.deleteOne(new Document("_id", new ObjectId(request.getParameter("deleteDoc"))));
-				request.setAttribute("accounts", parseCollection(accounts));
 				
+				accounts.deleteOne(new Document("_id", new ObjectId(request.getParameter("deleteAccount"))));
+				
+				refreshAttributes(request);
+
 				RequestDispatcher view = request.getRequestDispatcher("/ManageApplications.jsp");
 				view.forward(request, response);
 
 			} catch (Exception e) {
 				
 			}
+			break;
+		case "deleteCourse":
+			try {
+				MongoCollection<Document> courses = database.getCollection("courses");
+				
+				courses.deleteOne(new Document("_id", new ObjectId(request.getParameter("deleteCourse"))));
+				
+				refreshAttributes(request);
+
+				RequestDispatcher view = request.getRequestDispatcher("/ManageApplications.jsp");
+				view.forward(request, response);
+
+			} catch (Exception e) {
+				
+			}
+			break;
+		default:
+			refreshAttributes(request);
+			RequestDispatcher view = request.getRequestDispatcher("/ManageApplications.jsp");
+			view.forward(request, response);
 			break;
 		}
 	}
@@ -116,8 +133,10 @@ public class Home extends HttpServlet {
 //			}
 			if (request.getParameterMap().containsKey("login")) {
 				return "login";
-			} else if (request.getParameterMap().containsKey("deleteConfirm")) {
-				return "delete";
+			} else if (request.getParameterMap().containsKey("deleteAccount")) {
+				return "deleteAccount";
+			} else if (request.getParameterMap().containsKey("deleteCourse")) {
+				return "deleteCourse";
 			} 
 		} catch (Exception e) {
 			
@@ -176,6 +195,16 @@ public class Home extends HttpServlet {
 			System.out.println("Unsuccessfully" + e);
 		}
 		return false;
+	}
+	
+	public void refreshAttributes(HttpServletRequest request) {
+		MongoCollection<Document> accounts = database.getCollection("users");
+		MongoCollection<Document> courses = database.getCollection("courses");
+		MongoCollection<Document> applications = database.getCollection("applications");
+		
+		request.setAttribute("accounts", parseCollection(accounts));
+		request.setAttribute("courses", parseCollection(courses));
+		request.setAttribute("applications", parseCollection(applications));
 	}
 
 }

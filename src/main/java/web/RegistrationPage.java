@@ -65,16 +65,20 @@ public class RegistrationPage extends HttpServlet {
 		String accType = request.getParameter("accountType");
 
 		try {
-			MongoCollection<Document> studentCol = database.getCollection("students");
-			MongoCollection<Document> profCol = database.getCollection("professors");
+//			MongoCollection<Document> studentCol = database.getCollection("students");
+//			MongoCollection<Document> profCol = database.getCollection("professors");
+			MongoCollection<Document> applications = database.getCollection("applications");
+			
 			Document newUser = new Document("_id", new ObjectId());
-			newUser.append("name", name).append("lastname", lastname).append("email", email);
+			newUser.append("name", name).append("lastname", lastname).append("email", email).append("accType", accType);
 
-			if (accType.equals("Student")) {
-				studentCol.insertOne(newUser);
-			} else if (accType.equals("Professor")) {
-				profCol.insertOne(newUser);
-			}
+//			if (accType.equals("Student")) {
+//				studentCol.insertOne(newUser);
+//			} else if (accType.equals("Professor")) {
+//				profCol.insertOne(newUser);
+//			}
+			
+			applications.insertOne(newUser);
 
 			System.out.println("Successfully added " + name + " " + lastname + " to " + accType + " Database");
 

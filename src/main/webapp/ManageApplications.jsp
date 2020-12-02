@@ -1,5 +1,6 @@
 <%@page import="java.util.ArrayList"%>
 <%@page import="org.bson.Document"%>
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -52,7 +53,7 @@ body {
 						<div class="col-6">
 							<div class="py-2" style="float: right;">
 								<button class="btn btn-primary" name="viewApplications"
-									data-toggle="modal">
+									data-target="#applicationsModal" data-toggle="modal">
 									<i class="fa fa-user"></i><span> View Applications</span>
 								</button>
 							</div>
@@ -60,7 +61,7 @@ body {
 						</div>
 					</div>
 				</div>
-				<%! String deleteDoc ="null"; %>
+			<form role="form" action="home" method="post">
 				<table class="table table-striped table-hover">
 					<thead class="thead-dark">
 						<tr align="center">
@@ -84,16 +85,15 @@ body {
 							<td><%=s.get("_id")%></td>
 							<td><%=s.get("password")%></td>
 							<td>(480) 631-2097</td>
-							<td><button type="button" class="btn btn-danger"
-									name="deleteButton" data-toggle="modal"
-									data-target="#deleteModal" onclick="<%deleteDoc=s.get("_id").toString();%>">		
-									<i class="fa fa-trash" data-toggle="tooltip" title="Delete"></i>
-								</button>
-							</td>
+							<td><button
+												type="submit" class="btn btn-danger" name="deleteAccount"
+												value="<%=s.get("_id")%>"><i class="fa fa-trash" data-toggle="tooltip" title="Delete"></i></button>
+								</td>
 						</tr>
 						<%}%>
 					</tbody>
 				</table>
+				</form>
 			</div>
 		</div>
 		<div class="tab-pane fade" id="courses" role="tabpanel"
@@ -117,6 +117,7 @@ body {
 						</div>
 					</div>
 				</div>
+				<form role="form" action="home" method="post">
 				<table class="table table-striped table-hover">
 					<thead class="thead-dark">
 						<tr align="center">
@@ -128,19 +129,21 @@ body {
 						</tr>
 					</thead>
 					<tbody>
+						<%ArrayList<Document> courses = (ArrayList<Document>)request.getAttribute("courses"); 
+        				for(Document s:courses){%>
 						<tr align="center">
-							<td>4004</td>
-							<td>Software Quality Assurance</td>
-							<td>Jean-Pierre Corriveau</td>
-							<td>Fri 2:30-5:30</td>
-							<td><button type="button" class="btn btn-danger"
-									name="deleteButton" data-toggle="modal"
-									data-target="#deleteModal">
-									<i class="fa fa-trash" data-toggle="tooltip" title="Delete"></i>
-								</button></td>
+							<td><%=s.get("course_code")%></td>
+							<td><%=s.get("course_name")%></td>
+							<td><%=s.get("prof_name")%></td>
+							<td><%=s.get("term")%></td>
+							<td><button
+												type="submit" class="btn btn-danger" name="deleteCourse"
+												value="<%=s.get("_id")%>"><i class="fa fa-trash" data-toggle="tooltip" title="Delete"></i></button></td>
 						</tr>
+						<%}%>
 					</tbody>
 				</table>
+				</form>
 			</div>
 		</div>
 	</div>
@@ -161,8 +164,8 @@ body {
 						</p>
 					</div>
 					<div class=form-group>
-					<input type="text" class="form-control" id="deleteDoc"
-						name="deleteDoc" value="<%=deleteDoc%>">
+						<input type="hidden" class="form-control" id="deleteDoc"
+							name="deleteDoc" value="">
 					</div>
 					<div class="modal-footer">
 						<input type="button" class="btn btn-default" data-dismiss="modal"
@@ -211,10 +214,10 @@ body {
 										<option>Summer</option>
 									</select>
 								</div>
-								<input type="button" class="btn btn-default" data-dismiss="modal"
-						value="Cancel">
-						<input type="submit" id="submit" name="submit" value="Create"
-						class="btn btn-primary float-right">
+								<input type="button" class="btn btn-default"
+									data-dismiss="modal" value="Cancel"> <input
+									type="submit" id="submit" name="submit" value="Create"
+									class="btn btn-primary float-right">
 							</form>
 						</div>
 					</div>
@@ -222,5 +225,51 @@ body {
 			</div>
 		</div>
 	</div>
+
+	<!-- Applications Modal -->
+	<div id="applicationsModal" class="modal fade">
+		<div class="modal-dialog modal-lg modal-dialog-centered">
+			<div class="modal-content">
+				<div class="modal-header"></div>
+				<div class="modal-body">
+					<div style="margin: auto">
+						<div class="form-area ">
+							<form role="form" action="applications" method="post">
+								<table class="table table-striped table-hover">
+									<thead class="thead-dark">
+										<tr align="center">
+											<th>First Name</th>
+											<th>Last Name</th>
+											<th>Email</th>
+											<th>Account Type</th>
+											<th>Actions</th>
+										</tr>
+									</thead>
+									<tbody>
+										<%ArrayList<Document> applications = (ArrayList<Document>)request.getAttribute("applications");
+        				for(Document s:applications){%>
+										<tr align="center">
+											<td><%=s.get("name")%></td>
+											<td><%=s.get("lastname")%></td>
+											<td><%=s.get("email")%></td>
+											<td><%=s.get("accType")%></td>
+											<td>
+												<button
+												type="submit" class="btn btn-success" name="ConfirmApp"
+												value="<%=s.get("email")%>"><i class="fa fa-plus" data-toggle="tooltip" title="Submit"></i></button>
+												<button
+												type="submit" class="btn btn-danger" name="DenyApp"
+												value="<%=s.get("_id")%>"><i class="fa fa-trash" data-toggle="tooltip" title="Delete"></i></button>
+										</tr>
+										<%}%>
+									</tbody>
+								</table>
+							</form>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		</div>
 </body>
 </html>
