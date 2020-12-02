@@ -51,11 +51,11 @@ public class Applications extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
 		try {
-			Enumeration<String> params = request.getParameterNames();
-			while (params.hasMoreElements()) {
-				String paramName = params.nextElement();
-				System.out.println("Parameter Name - " + paramName + ", Value - " + request.getParameter(paramName));
-			}
+//			Enumeration<String> params = request.getParameterNames();
+//			while (params.hasMoreElements()) {
+//				String paramName = params.nextElement();
+//				System.out.println("Parameter Name - " + paramName + ", Value - " + request.getParameter(paramName));
+//			}
 			mongoClient = new MongoClient(connectionString);
 			database = mongoClient.getDatabase("CMS");
 			MongoCollection<Document> applications = database.getCollection("applications");

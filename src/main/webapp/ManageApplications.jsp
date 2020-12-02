@@ -65,7 +65,6 @@ body {
 				<table class="table table-striped table-hover">
 					<thead class="thead-dark">
 						<tr align="center">
-							<th></th>
 							<th>Name</th>
 							<th>Email</th>
 							<th>Account Type</th>

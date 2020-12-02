@@ -51,6 +51,9 @@ public class Home extends HttpServlet {
 		// TODO Auto-generated method stub
 		response.getWriter().append("Served at: ").append(request.getContextPath());
 		System.out.println("GET");
+		refreshAttributes(request);
+		RequestDispatcher view = request.getRequestDispatcher("/ManageApplications.jsp");
+		view.forward(request, response);
 	}
 
 	/**
@@ -76,6 +79,7 @@ public class Home extends HttpServlet {
 				// Create a session object
 				HttpSession session = request.getSession(true);
 				session.setAttribute("userid", request.getParameter("uname"));
+				
 				if(uname.equals("admin")) {
 					RequestDispatcher view = request.getRequestDispatcher("/ManageApplications.jsp");
 					view.forward(request, response);
