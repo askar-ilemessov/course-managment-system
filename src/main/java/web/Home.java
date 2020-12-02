@@ -76,9 +76,16 @@ public class Home extends HttpServlet {
 				// Create a session object
 				HttpSession session = request.getSession(true);
 				session.setAttribute("userid", request.getParameter("uname"));
-						
-				RequestDispatcher view = request.getRequestDispatcher("/ManageApplications.jsp");
-				view.forward(request, response);
+				if(uname.equals("admin")) {
+					RequestDispatcher view = request.getRequestDispatcher("/ManageApplications.jsp");
+					view.forward(request, response);
+				}else {
+					RequestDispatcher view = request.getRequestDispatcher("/StudentView.jsp");
+					MongoCollection<Document> courses = database.getCollection("courses");
+					request.setAttribute("courses", parseCollection(courses));
+					view.forward(request, response);
+				}
+				
 			} else {
 				request.setAttribute("showError", "true");
 				RequestDispatcher view = request.getRequestDispatcher("/index.jsp");
@@ -154,6 +161,9 @@ public class Home extends HttpServlet {
 		}
 		return documents;
 	}
+	
+	
+
 
 	public boolean checkLoginCredentials(String uname, String psw) {
 		try {

@@ -77,10 +77,7 @@ body {
 						<%ArrayList<Document> std = (ArrayList<Document>)request.getAttribute("accounts"); 
         				for(Document s:std){%>
 						<tr align="center">
-							<td><span class="custom-checkbox"> <input
-									type="checkbox" id="checkbox5" name="options[]" value="1">
-									<label for="checkbox5"></label>
-							</span></td>
+							
 							<td><%=s.get("name")%></td>
 							<td><%=s.get("_id")%></td>
 							<td><%=s.get("password")%></td>
