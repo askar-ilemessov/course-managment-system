@@ -43,7 +43,7 @@ public class CreateCourse extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 		
-		RequestDispatcher view = request.getRequestDispatcher("/ManageApplications.html");
+		RequestDispatcher view = request.getRequestDispatcher("/ManageApplications.jsp");
 		view.forward(request, response);
 	}
 
@@ -70,7 +70,7 @@ public class CreateCourse extends HttpServlet {
 			MongoCollection<Document> courses = database.getCollection("courses");
 			
 			Document newCourse = new Document("_id", new ObjectId());
-			newCourse.append("course_name", course_name).append("course_code", course_code).append("section", section).append("prof_name", prof_name).append("term", term);
+			newCourse.append("course_name", course_name).append("course_code", course_code).append("section", section).append("prof_name", prof_name).append("term", term).append("capacity", "100");
 
 			
 			courses.insertOne(newCourse);

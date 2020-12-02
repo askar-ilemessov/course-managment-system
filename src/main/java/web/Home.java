@@ -144,16 +144,7 @@ public class Home extends HttpServlet {
 	}
 	
 	
-	private <T> Object listCourses(MongoCollection<Document> courses) {
-		// Retrieving the documents
-		ArrayList<Document> documents = new ArrayList<>();
-		FindIterable<Document> iterDoc = courses.find();
-		MongoCursor<Document> it = iterDoc.iterator();
-		while (it.hasNext()) {
-			documents.add((Document) it.next());
-		}
-		return documents;
-	}
+
 
 	public boolean checkLoginCredentials(String uname, String psw) {
 		try {
