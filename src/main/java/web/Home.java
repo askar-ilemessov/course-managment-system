@@ -87,6 +87,40 @@ public class Home extends HttpServlet {
 					RequestDispatcher view = request.getRequestDispatcher("/StudentView.jsp");
 					MongoCollection<Document> courses = database.getCollection("courses");
 					request.setAttribute("courses", parseCollection(courses));
+					
+					
+					
+	
+					
+					
+					
+					
+					
+
+					
+					
+					
+					MongoCollection<Document> collection = database.getCollection("users");
+					
+					
+					List<Document> users = (List<Document>) collection.find().into(new ArrayList<Document>());
+					
+					for (Document user : users) {
+						if(user.getString("name").equals(uname)) {
+							List<Document> regCourse = (List<Document>) user.get("reg_courses");
+							
+							request.setAttribute("courses2", regCourse);
+							
+							for (Document course : regCourse) {
+								System.out.println("name = " + user.getString("name") + " course details below");
+								System.out.println("course name = " + course.getString("name"));
+								System.out.println("cours type = " + course.getString("term"));
+							}
+						}
+						
+						
+					}			
+					
 					view.forward(request, response);
 				}
 				
@@ -135,6 +169,8 @@ public class Home extends HttpServlet {
 		}
 	}
 
+	
+
 	private String getReqType(HttpServletRequest request) {
 		try {
 //			Enumeration<String> params = request.getParameterNames();
@@ -153,6 +189,19 @@ public class Home extends HttpServlet {
 			
 		}
 		return "";
+	}
+	
+	
+	private <T> Object parseCollection(List<Document> list) {
+		// Retrieving the documents
+		ArrayList<List> documents = new ArrayList<>();
+		
+		FindIterable<List> iterDoc = ((MongoCollection<List>) list).find();
+		MongoCursor<List> it = iterDoc.iterator();
+		while (it.hasNext()) {
+			documents.add((List) it.next());
+		}
+		return documents;
 	}
 
 	private <T> Object parseCollection(MongoCollection<Document> accounts) {

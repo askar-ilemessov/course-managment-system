@@ -1,5 +1,7 @@
 <%@page import="java.util.ArrayList"%>
 <%@page import="org.bson.Document"%>
+<%@page import="com.mongodb.client.MongoCursor"%>
+<%@page import="java.util.List"%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -31,13 +33,14 @@ body {
 <body>
 	
 		<ul class="nav nav-tabs" id="myTab" role="tablist">
+			
 			<li class="nav-item"><a class="nav-link active"
 				id="courses-tab" data-toggle="tab" href="#courses" role="tab"
 				aria-controls="student" aria-selected="true">Courses</a></li>
 
 			<li class="nav-item"><a class="nav-link" id="courses-tab"
-				data-toggle="tab" href="#courses" role="tab" aria-controls="profile"
-				aria-selected="false">Courses</a></li>
+				data-toggle="tab" href="#courses2" role="tab" aria-controls="profile"
+				aria-selected="false">Registered Courses</a></li>
 		</ul>
 		
 		<div class="tab-content" id="myTabContent">
@@ -62,7 +65,6 @@ body {
 							</div>
 						</div>
 					</div>
-					<form role="form" action="student" method="post">
 					<%!String deleteDoc = "null";%>
 					<table class="table table-striped table-hover">
 						<thead class="thead-dark">
@@ -98,55 +100,50 @@ body {
 					</table>
 				</div>
 			</div>
-			<div class="tab-pane fade" id="courses" role="tabpanel"
+			<div class="tab-pane fade" id="courses2" role="tabpanel"
 				aria-labelledby="courses-tab">
 				<div class="container">
 					<div class="table-title">
 						<div class="row">
 							<div class="col-6 pt-2">
 								<h2>
-									Manage <b>Courses</b>
+									Registered <b>Courses</b>
 								</h2>
 							</div>
-							<div class="col-6">
-								<div class="py-2" style="float: right;">
-									<button class="btn btn-primary" name="viewApplications"
-										data-toggle="modal" data-target="#createCourseModal">
-										<i class="fa fa-plus"></i><span> Create Course</span>
-									</button>
-								</div>
 
-							</div>
 						</div>
 					</div>
 					<table class="table table-striped table-hover">
 						<thead class="thead-dark">
 							<tr align="center">
-								<th>Course Code</th>
+								
 								<th>Course Name</th>
-								<th>Professor Assigned</th>
-								<th>Scheduled Time</th>
-								<th>Actions</th>
+								<th>Course Term</th>
+
+
 							</tr>
 						</thead>
 						<tbody>
+							<%
+							List<Document> regCourses = (List<Document>) request.getAttribute("courses2");
+								//ArrayList<Document> std2 = (ArrayList<Document>) request.getAttribute("courses2");
+							
+							for (Document course : regCourses) {
+							
+							%>
 							<tr align="center">
-								<td>4004</td>
-								<td>Software Quality Assurance</td>
-								<td>Jean-Pierre Corriveau</td>
-								<td>Fri 2:30-5:30</td>
-								<td><button type="button" class="btn btn-danger"
-										name="deleteButton" data-toggle="modal"
-										data-target="#deleteModal">
-										<i class="fa fa-trash" data-toggle="tooltip" title="Delete"></i>
-									</button></td>
+								
+								<td><%=course.getString("name")%></td>
+								<td><%=course.getString("term")%></td>
+					
+
 							</tr>
+							<%}%>
 						</tbody>
 					</table>
 				</div>
 			</div>
 		</div>
 
-	</form>
 </body>
 </html>
