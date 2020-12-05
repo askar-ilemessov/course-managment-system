@@ -76,9 +76,10 @@ public class Home extends HttpServlet {
 				} catch (Exception e) {
 					
 				}
+		
 				// Create a session object
 				HttpSession session = request.getSession(true);
-				session.setAttribute("userid", request.getParameter("uname"));
+				session.setAttribute("userid", request.getParameter("_id"));
 				
 				if(uname.equals("admin")) {
 					RequestDispatcher view = request.getRequestDispatcher("/ManageApplications.jsp");

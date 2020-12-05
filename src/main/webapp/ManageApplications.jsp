@@ -78,7 +78,7 @@ body {
 						<tr align="center">
 							
 							<td><%=s.get("name")%></td>
-							<td><%=s.get("_id")%></td>
+							<td><%=s.get("email")%></td>
 							<td><%=s.get("password")%></td>
 							<td>(480) 631-2097</td>
 							<td><button

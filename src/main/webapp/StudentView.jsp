@@ -113,13 +113,14 @@ body {
 
 						</div>
 					</div>
+					<form action="Course" method="get">
 					<table class="table table-striped table-hover">
 						<thead class="thead-dark">
 							<tr align="center">
 								
 								<th>Course Name</th>
 								<th>Course Term</th>
-
+								<th>Actions</th>
 
 							</tr>
 						</thead>
@@ -135,12 +136,16 @@ body {
 								
 								<td><%=course.getString("name")%></td>
 								<td><%=course.getString("term")%></td>
-					
+								<td><button
+									type="submit" class="btn btn-primary" name="viewCourse"
+									value="<%=course.get("name")%>"><i class="fa fa-eye" data-toggle="tooltip" title="viewCourse"></i></button>
+								</td>
 
 							</tr>
 							<%}%>
 						</tbody>
 					</table>
+					</form>
 				</div>
 			</div>
 		</div>

@@ -5,6 +5,16 @@
 <web-app>
 
 	<display-name>Archetype Created Web Application</display-name>
+	<servlet>
+		<servlet-name>Course</servlet-name>
+		<display-name>Course</display-name>
+		<description></description>
+		<servlet-class>web.Course</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>Course</servlet-name>
+		<url-pattern>/Course</url-pattern>
+	</servlet-mapping>
 	<welcome-file-list>
 		<welcome-file>index.html</welcome-file>
 		<welcome-file>index.htm</welcome-file>
