@@ -31,87 +31,84 @@ body {
 </style>
 </head>
 <body>
-	
-		<ul class="nav nav-tabs" id="myTab" role="tablist">
-			
-			<li class="nav-item"><a class="nav-link active"
-				id="courses-tab" data-toggle="tab" href="#courses" role="tab"
-				aria-controls="student" aria-selected="true">Courses</a></li>
 
-			<li class="nav-item"><a class="nav-link" id="courses-tab"
-				data-toggle="tab" href="#courses2" role="tab" aria-controls="profile"
-				aria-selected="false">Registered Courses</a></li>
-		</ul>
-		
-		<div class="tab-content" id="myTabContent">
-			<div class="tab-pane fade show active" id="courses" role="tabpanel"
-				aria-labelledby="courses-tab">
-				<div class="container">
-					<div class="table-title">
-						<div class="row">
-							<div class="col-6 pt-2">
-								<h2>
-									Register for  <b>Courses</b>
-								</h2>
-							</div>
-							<div class="col-6">
-								<div class="py-2" style="float: right;">
-									<button class="btn btn-primary" name="Register"
-										data-toggle="modal">
-										<i class="fa fa-user"></i><span> Register</span>
-									</button>
-								</div>
+	<ul class="nav nav-tabs" id="myTab" role="tablist">
 
-							</div>
+		<li class="nav-item"><a class="nav-link active" id="courses-tab"
+			data-toggle="tab" href="#courses1" role="tab" aria-controls="student"
+			aria-selected="true">Courses</a></li>
+
+		<li class="nav-item"><a class="nav-link" id="courses-tab"
+			data-toggle="tab" href="#courses2" role="tab" aria-controls="profile"
+			aria-selected="false">Registered Courses</a></li>
+	</ul>
+
+	<div class="tab-content" id="myTabContent">
+		<div class="tab-pane fade show active" id="courses1" role="tabpanel"
+			aria-labelledby="courses-tab">
+			<div class="container">
+				<div class="table-title">
+					<div class="row">
+						<div class="col-6 pt-2">
+							<h2>
+								Register for <b>Courses</b>
+							</h2>
 						</div>
+						<div class="col-6"></div>
 					</div>
-					<%!String deleteDoc = "null";%>
+				</div>
+				<form  action="RegisterCourse" method="post">
 					<table class="table table-striped table-hover">
 						<thead class="thead-dark">
 							<tr align="center">
-								<th></th>
+
 								<th>Course Code</th>
 								<th>Course Name</th>
 								<th>Professor Assigned</th>
 								<th>Section</th>
 								<th>Term</th>
 								<th>Capacity</th>
+								<th></th>
 							</tr>
 						</thead>
+
 						<tbody>
 							<%
 								ArrayList<Document> std = (ArrayList<Document>) request.getAttribute("courses");
 							for (Document s : std) {
 							%>
 							<tr align="center">
-								<td><span class="custom-checkbox"> <input
-										type="checkbox" id="checkbox5" name="options[]" value="1">
-										<label for="checkbox5"></label>
-								</span></td>
+
 								<td><%=s.get("course_code")%></td>
 								<td><%=s.get("course_name")%></td>
 								<td><%=s.get("prof_name")%></td>
 								<td><%=s.get("section")%></td>
 								<td><%=s.get("term")%></td>
 								<td><%=s.get("capacity")%></td>
+
+								<td> </td>
+								
 							</tr>
 							<%}%>
 						</tbody>
-					</table>
-				</div>
-			</div>
-			<div class="tab-pane fade" id="courses2" role="tabpanel"
-				aria-labelledby="courses-tab">
-				<div class="container">
-					<div class="table-title">
-						<div class="row">
-							<div class="col-6 pt-2">
-								<h2>
-									Registered <b>Courses</b>
-								</h2>
-							</div>
 
+					</table>
+					<input type="text" id="courseCode" name="course_code" placeholder="Corse Code" class="form-control" required> 
+					<input type="submit" name="Register" class= "btn btn-info" value= "submit" > 
+				</form>
+			</div>
+		</div>
+		<div class="tab-pane fade" id="courses2" role="tabpanel"
+			aria-labelledby="courses-tab">
+			<div class="container">
+				<div class="table-title">
+					<div class="row">
+						<div class="col-6 pt-2">
+							<h2>
+								Registered <b>Courses</b>
+							</h2>
 						</div>
+
 					</div>
 					<form action="Course" method="get">
 					<table class="table table-striped table-hover">
@@ -122,10 +119,11 @@ body {
 								<th>Course Term</th>
 								<th>Actions</th>
 
-							</tr>
-						</thead>
-						<tbody>
-							<%
+
+						</tr>
+					</thead>
+					<tbody>
+						<%
 							List<Document> regCourses = (List<Document>) request.getAttribute("courses2");
 								//ArrayList<Document> std2 = (ArrayList<Document>) request.getAttribute("courses2");
 							
@@ -149,6 +147,7 @@ body {
 				</div>
 			</div>
 		</div>
+	</div>
 
 </body>
 </html>

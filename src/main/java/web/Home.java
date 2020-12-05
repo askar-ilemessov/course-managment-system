@@ -24,6 +24,7 @@ import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoCursor;
 import com.mongodb.client.MongoDatabase;
 import com.mongodb.client.model.Filters;
+import com.mongodb.client.model.Updates;
 
 /**
  * Servlet implementation class Home
@@ -60,8 +61,9 @@ public class Home extends HttpServlet {
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		
+		//String uname = "";
 		switch (getReqType(request)) {
+		
 		//LOGIN AUTH
 		case "login":
 			String uname = request.getParameter("uname");
@@ -93,34 +95,26 @@ public class Home extends HttpServlet {
 					
 	
 					
-					
-					
-					
+										
 					
 
 					
 					
-					
+					// sending reg_courses array to the jsp
 					MongoCollection<Document> collection = database.getCollection("users");
-					
-					
 					List<Document> users = (List<Document>) collection.find().into(new ArrayList<Document>());
-					
 					for (Document user : users) {
 						if(user.getString("name").equals(uname)) {
 							List<Document> regCourse = (List<Document>) user.get("reg_courses");
-							
 							request.setAttribute("courses2", regCourse);
-							
-							for (Document course : regCourse) {
-								System.out.println("name = " + user.getString("name") + " course details below");
-								System.out.println("course name = " + course.getString("name"));
-								System.out.println("cours type = " + course.getString("term"));
-							}
+//							for (Document course : regCourse) {
+//								System.out.println("name = " + user.getString("name") + " course details below");
+//								System.out.println("course name = " + course.getString("name"));
+//								System.out.println("cours type = " + course.getString("term"));
+//							}
 						}
-						
-						
-					}			
+					}
+					
 					
 					view.forward(request, response);
 				}
@@ -131,6 +125,7 @@ public class Home extends HttpServlet {
 				view.forward(request, response);
 			}
 			break;
+			
 		//DELETE ACCOUNT
 		case "deleteAccount":
 			try {
@@ -162,16 +157,30 @@ public class Home extends HttpServlet {
 				
 			}
 			break;
+			
+			
+		case "registerCourse":
+			try {
+				
+				//RequestDispatcher view = request.getRequestDispatcher("/ManageApplications.jsp");
+				//view.forward(request, response);
+				//String s = request.getParameter("registerCourse");
+				System.out.println(request.getParameter("registerCourse"));
+				System.out.println("clicked");
+			} catch (Exception e) {
+				
+			}
+			break;
+			
 		default:
+			
 			refreshAttributes(request);
 			RequestDispatcher view = request.getRequestDispatcher("/ManageApplications.jsp");
 			view.forward(request, response);
 			break;
 		}
 	}
-
 	
-
 	private String getReqType(HttpServletRequest request) {
 		try {
 //			Enumeration<String> params = request.getParameterNames();
@@ -185,6 +194,8 @@ public class Home extends HttpServlet {
 				return "deleteAccount";
 			} else if (request.getParameterMap().containsKey("deleteCourse")) {
 				return "deleteCourse";
+			} else if (request.getParameterMap().containsKey("registerCourse")) {
+				return "registerCourse";
 			} 
 		} catch (Exception e) {
 			
@@ -192,18 +203,7 @@ public class Home extends HttpServlet {
 		return "";
 	}
 	
-	
-	private <T> Object parseCollection(List<Document> list) {
-		// Retrieving the documents
-		ArrayList<List> documents = new ArrayList<>();
-		
-		FindIterable<List> iterDoc = ((MongoCollection<List>) list).find();
-		MongoCursor<List> it = iterDoc.iterator();
-		while (it.hasNext()) {
-			documents.add((List) it.next());
-		}
-		return documents;
-	}
+
 
 	private <T> Object parseCollection(MongoCollection<Document> accounts) {
 		// Retrieving the documents
