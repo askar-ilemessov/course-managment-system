@@ -3,6 +3,7 @@ package web;
 import java.io.IOException;
 import java.util.ArrayList;
 
+import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -113,6 +114,9 @@ public class RegisterCourse extends HttpServlet {
 		// System.out.println(uname);
 		// System.out.println(course_code);
 		// doGet(request, response);
+		
+		RequestDispatcher view = request.getRequestDispatcher("/home");
+		view.forward(request, response);
 	}
 	
 

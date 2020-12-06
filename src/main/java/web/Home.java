@@ -173,9 +173,15 @@ public class Home extends HttpServlet {
 			break;
 			
 		default:
-			
-			refreshAttributes(request);
-			RequestDispatcher view = request.getRequestDispatcher("/ManageApplications.jsp");
+			HttpSession session = request.getSession(true);
+			RequestDispatcher view;
+			if (session.getAttribute("userid").equals("admin")) {
+				refreshAttributes(request);
+				view = request.getRequestDispatcher("/ManageApplications.jsp");
+			} else {
+				refreshAttributes(request);
+				view = request.getRequestDispatcher("/StudentView.jsp");
+			}
 			view.forward(request, response);
 			break;
 		}
@@ -269,6 +275,17 @@ public class Home extends HttpServlet {
 		request.setAttribute("accounts", parseCollection(accounts));
 		request.setAttribute("courses", parseCollection(courses));
 		request.setAttribute("applications", parseCollection(applications));
+		
+		HttpSession session = request.getSession(true);
+		
+		List<Document> users = (List<Document>) accounts.find().into(new ArrayList<Document>());
+		for (Document user : users) {
+			if(user.getString("name").equals(session.getAttribute("userid"))) {
+				List<Document> regCourse = (List<Document>) user.get("reg_courses");
+				request.setAttribute("courses2", regCourse);
+			}
+		
+	}
 	}
 
 }
