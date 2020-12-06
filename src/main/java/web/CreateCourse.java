@@ -49,16 +49,6 @@ public class CreateCourse extends HttpServlet {
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-
-		try {
-			// database connection
-			mongoClient = new MongoClient(connectionString);
-			database = mongoClient.getDatabase("CMS");
-
-			System.out.println("Successfully Connected" + " to the database");
-		} catch (Exception e) {
-			System.out.println("Failed to Connected" + e);
-		}
 		
 		String course_name = request.getParameter("course_name");
 		String course_code = request.getParameter("course_code");
@@ -66,7 +56,19 @@ public class CreateCourse extends HttpServlet {
 		String prof_name = request.getParameter("prof_name");
 		String term = request.getParameter("term");
 		
+		addCourse(course_name, course_code, section, prof_name, term);
+		
+		mongoClient.close();
+		
+
+		doGet(request, response);
+	}
+
+	public void addCourse(String course_name, String course_code, String section, String prof_name, String term) {
+		
 		try {
+			mongoClient = new MongoClient(connectionString);
+			database = mongoClient.getDatabase("CMS");
 			MongoCollection<Document> courses = database.getCollection("courses");
 			
 			Document newCourse = new Document("_id", new ObjectId());
@@ -82,10 +84,6 @@ public class CreateCourse extends HttpServlet {
 			System.out.println("Unsuccessfully" + e);
 		}
 		
-		mongoClient.close();
-		
-
-		doGet(request, response);
 	}
 
 }

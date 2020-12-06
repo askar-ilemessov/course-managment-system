@@ -42,7 +42,7 @@ body {
 			data-toggle="tab" href="#courses2" role="tab" aria-controls="profile"
 			aria-selected="false">Registered Courses</a></li>
 	</ul>
-	<a href="/cms" onClick="<%session.invalidate();%>; ">Log Out</a>
+	<a href="/cms/logout">Log Out</a>
 	</div>
 
 	<div class="tab-content" id="myTabContent">

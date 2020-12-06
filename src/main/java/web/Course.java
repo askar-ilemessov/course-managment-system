@@ -78,10 +78,9 @@ public class Course extends HttpServlet {
 		    
 		    
 		    for (Document c : course) {
-//		    	System.out.println(c);
+		    	System.out.println(c);
 		    	List<Document> list = (List<Document>)c.get("assignments");
 		    	request.setAttribute("assignments", list);
-		    	//viewCourse = doc;
 		    	 for (Document assignment : list) {
 		    		 MongoCollection<Document> users = database.getCollection("users");
 		    		 BasicDBObject userQuery = new BasicDBObject();
