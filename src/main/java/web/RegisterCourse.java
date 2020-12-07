@@ -41,20 +41,15 @@ public class RegisterCourse extends HttpServlet {
        
     public RegisterCourse() {
         super();
-        // TODO Auto-generated constructor stub
     }
 
-	/**
-	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
-	 */
+
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
 
 	}
 
-	/**
-	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
-	 */
+
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		
 		
@@ -74,54 +69,49 @@ public class RegisterCourse extends HttpServlet {
 		HttpSession session = request.getSession(true);
 		String uname = (String) session.getAttribute("userid");
 		
-		
-		MongoCollection<Document> users = database.getCollection("users");
 		MongoCollection<Document> courses = database.getCollection("courses");
-		
 		FindIterable<Document> courseInfo = findCourseByName(courses, course_code);
-		FindIterable<Document> userInfo = findUserByName(users, uname);
-		String courseName="";
-		String capacity = "";
 
 		for (Document course : courseInfo) {
-
-			for (Document user : userInfo) {
-				DBObject findQuery = new BasicDBObject("name", uname);
-
-				//Document course22 = new Document("name", course.getString("course_name")).append("term", course.getString("term"));
-				DBObject course2 = new BasicDBObject("req_courses", new BasicDBObject("name",course.getString("course_name")).append("term", course.getString("term")));
-
-				
-				DBObject updateQuery = new BasicDBObject("$push", course2);
-				users.updateOne(Filters.eq("name", uname), new Document().append(
-				        "$push",
-				        new Document("reg_courses", new Document("name", course.getString("course_name")).append("term", course.getString("term")))
-				    ));
-				
-				System.out.println(course);
-				System.out.println(user);
-
-				//System.out.println(user.getString("reg_courses"));
-				courseName = course.getString("course_name");
-				capacity = course.getString("capacity");
+			
+			if(course.getInteger("capacity") != 0) {
+				registerCourse(course_code, uname);
+			}else {
+				System.out.println("The course is full");
 			}
 		}
-		//System.out.println(courseName);
-		//System.out.println(capacity);
-
-		
-
-		// System.out.println(uname);
-		// System.out.println(course_code);
-		// doGet(request, response);
 		
 		RequestDispatcher view = request.getRequestDispatcher("/home");
 		view.forward(request, response);
 	}
 	
 
+	public void registerCourse(String course_code, String uname) {
 
-	// need to implenet "doesnt exist" case
+		MongoCollection<Document> users = database.getCollection("users");
+		MongoCollection<Document> courses = database.getCollection("courses");
+
+		FindIterable<Document> courseInfo = findCourseByName(courses, course_code);
+		FindIterable<Document> userInfo = findUserByName(users, uname);
+
+		for (Document course : courseInfo) {
+
+			users.updateOne(Filters.eq("name", uname), new Document().append("$push", new Document("reg_courses",
+					new Document("name", course.getString("course_name")).append("term", course.getString("term")))));
+			
+		}
+		BasicDBObject newDocument =
+				new BasicDBObject().append("$inc",
+				new BasicDBObject().append("capacity", -1));
+		courses.updateOne(new BasicDBObject().append("course_code", course_code), newDocument);
+		
+		courses.updateOne(Filters.eq("course_code", course_code), new Document().append("$push", new Document("class_list",
+				new Document( "student_name", uname))));
+		
+	}
+	
+
+
 	
 	private static FindIterable<Document> findCourseByName(MongoCollection<Document> courses, String name) {
 		BasicDBObject whereQuery = new BasicDBObject();
