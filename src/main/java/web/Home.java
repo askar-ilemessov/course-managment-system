@@ -121,7 +121,7 @@ public class Home extends HttpServlet {
 		case "deleteAccount":
 			try {
 				String delAccName = request.getParameter("deleteAccount");
-				deleteAccount(delAccName);
+				deleteAccount(delAccName, database);
 				
 				refreshAttributes(request);
 
@@ -135,7 +135,7 @@ public class Home extends HttpServlet {
 		case "deleteCourse":
 			try {
 				String delCourseName = request.getParameter("deleteCourse");
-				deleteCourse(delCourseName);
+				deleteCourse(delCourseName, database);
 				
 				refreshAttributes(request);
 
@@ -176,15 +176,17 @@ public class Home extends HttpServlet {
 		}
 	}
 	
-	public void deleteCourse(String delCourseName) {
-		MongoCollection<Document> courses = database.getCollection("courses");
-		courses.deleteOne(new Document("_id", new ObjectId(delCourseName)));
+	public void deleteCourse(String delCourseName, MongoDatabase db) {
+		//remove course from reg course in students
+		MongoCollection<Document> courses = db.getCollection("courses");
+		courses.deleteOne(Filters.eq("course_name", delCourseName));
 		
 	}
 
-	public void deleteAccount(String delAccName) {
-		MongoCollection<Document> accounts = database.getCollection("students");
-		accounts.deleteOne(new Document("_id", new ObjectId(delAccName)));
+	public void deleteAccount(String delAccName, MongoDatabase db) {
+		//remove all student from all class lists they are reg in
+		MongoCollection<Document> accounts = db.getCollection("students");
+		accounts.deleteOne(Filters.eq("name", delAccName));
 		
 	}
 

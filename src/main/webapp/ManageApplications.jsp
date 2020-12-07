@@ -83,7 +83,7 @@ body {
 							<td>(480) 631-2097</td>
 							<td><button
 												type="submit" class="btn btn-danger" name="deleteAccount"
-												value="<%=s.get("_id")%>"><i class="fa fa-trash" data-toggle="tooltip" title="Delete"></i></button>
+												value="<%=s.get("name")%>"><i class="fa fa-trash" data-toggle="tooltip" title="Delete"></i></button>
 								</td>
 						</tr>
 						<%}%>
@@ -134,7 +134,7 @@ body {
 							<td><%=s.get("term")%></td>
 							<td><button
 												type="submit" class="btn btn-danger" name="deleteCourse"
-												value="<%=s.get("_id")%>"><i class="fa fa-trash" data-toggle="tooltip" title="Delete"></i></button></td>
+												value="<%=s.get("course_name")%>"><i class="fa fa-trash" data-toggle="tooltip" title="Delete"></i></button></td>
 						</tr>
 						<%}%>
 					</tbody>

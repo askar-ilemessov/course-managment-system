@@ -61,7 +61,7 @@ public class Applications extends HttpServlet {
 			MongoCollection<Document> applications = database.getCollection("applications");
 			String reqUname = request.getParameter("ConfirmApp"); 
 			if (request.getParameterMap().containsKey("ConfirmApp")) {
-				acceptApplication(reqUname);		
+				acceptApplication(reqUname, database);		
 			} 	
 			applications.deleteOne(new Document("_id", new ObjectId(request.getParameter("DenyApp"))));
 		} catch (Exception e) {
@@ -71,8 +71,8 @@ public class Applications extends HttpServlet {
 		view.forward(request, response);
 	}
 
-	public void acceptApplication(String reqUname) {
-		MongoCollection<Document> users = database.getCollection("users");
+	public void acceptApplication(String reqUname, MongoDatabase db) {
+		MongoCollection<Document> users = db.getCollection("users");
 		Document newCourse = new Document("_id", new ObjectId());
 		newCourse.append("name", reqUname).append("password", "password");
 

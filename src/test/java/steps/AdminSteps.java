@@ -2,9 +2,6 @@ package steps;
 import web.*;
 import static org.junit.Assert.*;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import org.bson.Document;
 
 import com.mongodb.BasicDBObject;
@@ -67,7 +64,7 @@ public class AdminSteps {
 	@Given("^there is a student named \"([^\"]*)\"$")
 	public void there_is_a_student_named(String arg1) throws Exception {
 	   Applications addStudent = new Applications();
-	   addStudent.acceptApplication(arg1);
+	   addStudent.acceptApplication(arg1, database);
 	}
 
 	@Given("^\"([^\"]*)\" is registered in \"([^\"]*)\"$")
@@ -78,9 +75,9 @@ public class AdminSteps {
 	@When("^I delete \"([^\"]*)\" from \"([^\"]*)\"$" )
 	public void i_delete(String arg1, String arg2) throws Exception {
 		if (arg2.equals("Courses")) {
-			admin.deleteCourse(arg1);
+			admin.deleteCourse(arg1, database);
 		} else {
-			admin.deleteAccount(arg1);
+			admin.deleteAccount(arg1, database);
 		}
 	}
 
@@ -91,15 +88,16 @@ public class AdminSteps {
 
 	@Then("^\"([^\"]*)\" should be removed from \"([^\"]*)\" class list$")
 	public void should_be_removed_from_class_list(String arg1, String arg2) throws Exception {
-	   
+	   assertFalse(checkDatabase(arg1,arg2));
 	}
 
 	@Then("^\"([^\"]*)\" should no longer be registered in \"([^\"]*)\"$")
 	public void should_no_longer_be_registered_in(String arg1, String arg2) throws Exception {
-	    
+		assertFalse(checkDatabase(arg1,arg2));
 	}
 	
 	private boolean checkDatabase(String arg1, String arg2) {
+		//check database to see if arg1 exists
 		MongoCollection<Document> courses = database.getCollection("courses");
 		MongoCollection<Document> students = database.getCollection("students");
 
