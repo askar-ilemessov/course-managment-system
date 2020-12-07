@@ -91,15 +91,6 @@ public class Home extends HttpServlet {
 					MongoCollection<Document> courses = database.getCollection("courses");
 					request.setAttribute("courses", parseCollection(courses));
 					
-					
-					
-	
-					
-										
-					
-
-					
-					
 					// sending reg_courses array to the jsp
 					MongoCollection<Document> collection = database.getCollection("users");
 					List<Document> users = (List<Document>) collection.find().into(new ArrayList<Document>());
@@ -129,9 +120,8 @@ public class Home extends HttpServlet {
 		//DELETE ACCOUNT
 		case "deleteAccount":
 			try {
-				MongoCollection<Document> accounts = database.getCollection("users");
-				
-				accounts.deleteOne(new Document("_id", new ObjectId(request.getParameter("deleteAccount"))));
+				String delAccName = request.getParameter("deleteAccount");
+				deleteAccount(delAccName);
 				
 				refreshAttributes(request);
 
@@ -144,9 +134,8 @@ public class Home extends HttpServlet {
 			break;
 		case "deleteCourse":
 			try {
-				MongoCollection<Document> courses = database.getCollection("courses");
-				
-				courses.deleteOne(new Document("_id", new ObjectId(request.getParameter("deleteCourse"))));
+				String delCourseName = request.getParameter("deleteCourse");
+				deleteCourse(delCourseName);
 				
 				refreshAttributes(request);
 
@@ -187,6 +176,18 @@ public class Home extends HttpServlet {
 		}
 	}
 	
+	public void deleteCourse(String delCourseName) {
+		MongoCollection<Document> courses = database.getCollection("courses");
+		courses.deleteOne(new Document("_id", new ObjectId(delCourseName)));
+		
+	}
+
+	public void deleteAccount(String delAccName) {
+		MongoCollection<Document> accounts = database.getCollection("students");
+		accounts.deleteOne(new Document("_id", new ObjectId(delAccName)));
+		
+	}
+
 	private String getReqType(HttpServletRequest request) {
 		try {
 //			Enumeration<String> params = request.getParameterNames();
@@ -271,7 +272,9 @@ public class Home extends HttpServlet {
 		MongoCollection<Document> accounts = database.getCollection("users");
 		MongoCollection<Document> courses = database.getCollection("courses");
 		MongoCollection<Document> applications = database.getCollection("applications");
+		MongoCollection<Document> students = database.getCollection("students");
 		
+		request.setAttribute("students", parseCollection(students));
 		request.setAttribute("accounts", parseCollection(accounts));
 		request.setAttribute("courses", parseCollection(courses));
 		request.setAttribute("applications", parseCollection(applications));

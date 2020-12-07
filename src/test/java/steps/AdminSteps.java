@@ -30,6 +30,7 @@ public class AdminSteps {
 	private static MongoDatabase database = null;
 	
 	CreateCourse courseManager = new CreateCourse();
+	Home admin = new Home();
 	
 	@Given("^I am on the Admin page$")
 	public void i_am_on_the_Admin_page() throws Exception {
@@ -60,12 +61,13 @@ public class AdminSteps {
 
 	@Then("^the \"([^\"]*)\" course should be created$")
 	public void the_course_should_be_created(String arg1) throws Exception {
-		assertTrue(checkCourse(arg1));
+		assertTrue(checkDatabase(arg1, "Courses"));
 	}
 
 	@Given("^there is a student named \"([^\"]*)\"$")
 	public void there_is_a_student_named(String arg1) throws Exception {
-	   
+	   Applications addStudent = new Applications();
+	   addStudent.acceptApplication(arg1);
 	}
 
 	@Given("^\"([^\"]*)\" is registered in \"([^\"]*)\"$")
@@ -73,14 +75,18 @@ public class AdminSteps {
 	   
 	}
 
-	@When("^I delete \"([^\"]*)\"$")
-	public void i_delete(String arg1) throws Exception {
-	   
+	@When("^I delete \"([^\"]*)\" from \"([^\"]*)\"$" )
+	public void i_delete(String arg1, String arg2) throws Exception {
+		if (arg2.equals("Courses")) {
+			admin.deleteCourse(arg1);
+		} else {
+			admin.deleteAccount(arg1);
+		}
 	}
 
-	@Then("^\"([^\"]*)\" should be removed from the database$")
-	public void should_be_removed_from_the_database(String arg1) throws Exception {
-	    
+	@Then("^\"([^\"]*)\" should be removed from the \"([^\"]*)\" database$")
+	public void should_be_removed_from_the_database(String arg1, String arg2) throws Exception {
+	    assertFalse(checkDatabase(arg1,arg2));
 	}
 
 	@Then("^\"([^\"]*)\" should be removed from \"([^\"]*)\" class list$")
@@ -93,13 +99,25 @@ public class AdminSteps {
 	    
 	}
 	
-	private boolean checkCourse(String arg1) {
+	private boolean checkDatabase(String arg1, String arg2) {
 		MongoCollection<Document> courses = database.getCollection("courses");
+		MongoCollection<Document> students = database.getCollection("students");
 
 		BasicDBObject query = new BasicDBObject();
 	    query.put("course_name", arg1);
 	  
 	    FindIterable<Document> docsIterable = courses.find(query);
+	    
+	    switch (arg1) {
+	    case "Courses":
+	    	 docsIterable = courses.find(query);
+	    	 break;
+	    	 
+	    case "Students" :
+	    	docsIterable = students.find(query);
+	    	break;
+	    }
+	   
 		try (MongoCursor<Document> iterator = docsIterable.iterator()) {
 			int count = 0;
 			while (iterator.hasNext() && count < 1) {

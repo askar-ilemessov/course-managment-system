@@ -73,13 +73,13 @@ body {
 						</tr>
 					</thead>
 					<tbody>
-						<%ArrayList<Document> std = (ArrayList<Document>)request.getAttribute("accounts"); 
+						<%ArrayList<Document> std = (ArrayList<Document>)request.getAttribute("students"); 
         				for(Document s:std){%>
 						<tr align="center">
 							
 							<td><%=s.get("name")%></td>
 							<td><%=s.get("email")%></td>
-							<td><%=s.get("password")%></td>
+							<td>Student</td>
 							<td>(480) 631-2097</td>
 							<td><button
 												type="submit" class="btn btn-danger" name="deleteAccount"

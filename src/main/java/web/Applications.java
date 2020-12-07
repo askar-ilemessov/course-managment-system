@@ -59,15 +59,10 @@ public class Applications extends HttpServlet {
 			mongoClient = new MongoClient(connectionString);
 			database = mongoClient.getDatabase("CMS");
 			MongoCollection<Document> applications = database.getCollection("applications");
-			MongoCollection<Document> users = database.getCollection("users");
-
+			String reqUname = request.getParameter("ConfirmApp"); 
 			if (request.getParameterMap().containsKey("ConfirmApp")) {
-				Document newCourse = new Document("_id", new ObjectId());
-				newCourse.append("name", request.getParameter("ConfirmApp")).append("password", "password");
-
-				users.insertOne(newCourse);
-				
-			} 			
+				acceptApplication(reqUname);		
+			} 	
 			applications.deleteOne(new Document("_id", new ObjectId(request.getParameter("DenyApp"))));
 		} catch (Exception e) {
 			
@@ -75,5 +70,15 @@ public class Applications extends HttpServlet {
 		RequestDispatcher view = request.getRequestDispatcher("/home");
 		view.forward(request, response);
 	}
+
+	public void acceptApplication(String reqUname) {
+		MongoCollection<Document> users = database.getCollection("users");
+		Document newCourse = new Document("_id", new ObjectId());
+		newCourse.append("name", reqUname).append("password", "password");
+
+		users.insertOne(newCourse);
+	}
+	
+	
 
 }
