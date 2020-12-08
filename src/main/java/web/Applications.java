@@ -1,6 +1,7 @@
 package web;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Enumeration;
 
 import javax.servlet.RequestDispatcher;
@@ -51,11 +52,11 @@ public class Applications extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
 		try {
-//			Enumeration<String> params = request.getParameterNames();
-//			while (params.hasMoreElements()) {
-//				String paramName = params.nextElement();
-//				System.out.println("Parameter Name - " + paramName + ", Value - " + request.getParameter(paramName));
-//			}
+			Enumeration<String> params = request.getParameterNames();
+			while (params.hasMoreElements()) {
+				String paramName = params.nextElement();
+				System.out.println("Parameter Name - " + paramName + ", Value - " + request.getParameter(paramName));
+			}
 			mongoClient = new MongoClient(connectionString);
 			database = mongoClient.getDatabase("CMS");
 			MongoCollection<Document> applications = database.getCollection("applications");
@@ -72,11 +73,11 @@ public class Applications extends HttpServlet {
 	}
 
 	public void acceptApplication(String reqUname, MongoDatabase db) {
-		MongoCollection<Document> users = db.getCollection("users");
+		MongoCollection<Document> students = db.getCollection("users");
 		Document newCourse = new Document("_id", new ObjectId());
-		newCourse.append("name", reqUname).append("password", "password");
+		newCourse.append("name", reqUname).append("password", "password").append("reg_courses", new ArrayList<>());
 
-		users.insertOne(newCourse);
+		students.insertOne(newCourse);
 	}
 	
 	

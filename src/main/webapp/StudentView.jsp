@@ -42,6 +42,7 @@ body {
 			data-toggle="tab" href="#courses2" role="tab" aria-controls="profile"
 			aria-selected="false">Registered Courses</a></li>
 	</ul>
+	<h1><%request.getSession(true).getAttribute("userid");%></h1>
 	<a href="/cms/logout">Log Out</a>
 	</div>
 

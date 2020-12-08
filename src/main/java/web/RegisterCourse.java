@@ -97,7 +97,7 @@ public class RegisterCourse extends HttpServlet {
 		for (Document course : courseInfo) {
 
 			users.updateOne(Filters.eq("name", uname), new Document().append("$push", new Document("reg_courses",
-					new Document("name", course.getString("course_name")).append("term", course.getString("term")))));
+					new Document("name", course.getString("course_name")).append("term", course.getString("term")).append("assignments", new ArrayList<>()))));
 			
 		}
 		BasicDBObject newDocument =

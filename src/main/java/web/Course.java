@@ -78,7 +78,7 @@ public class Course extends HttpServlet {
 		    
 		    
 		    for (Document c : course) {
-		    	System.out.println(c);
+//		    	System.out.println(c);
 		    	List<Document> list = (List<Document>)c.get("assignments");
 		    	request.setAttribute("assignments", list);
 		    	 for (Document assignment : list) {

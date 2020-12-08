@@ -73,7 +73,7 @@ body {
 						</tr>
 					</thead>
 					<tbody>
-						<%ArrayList<Document> std = (ArrayList<Document>)request.getAttribute("students"); 
+						<%ArrayList<Document> std = (ArrayList<Document>)request.getAttribute("accounts"); 
         				for(Document s:std){%>
 						<tr align="center">
 							

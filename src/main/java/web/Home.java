@@ -185,7 +185,7 @@ public class Home extends HttpServlet {
 
 	public void deleteAccount(String delAccName, MongoDatabase db) {
 		//remove all student from all class lists they are reg in
-		MongoCollection<Document> accounts = db.getCollection("students");
+		MongoCollection<Document> accounts = db.getCollection("users");
 		accounts.deleteOne(Filters.eq("name", delAccName));
 		
 	}
