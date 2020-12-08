@@ -53,7 +53,15 @@ public class Home extends HttpServlet {
 		response.getWriter().append("Served at: ").append(request.getContextPath());
 		System.out.println("GET");
 		refreshAttributes(request);
+		HttpSession session = request.getSession(true);
 		RequestDispatcher view = request.getRequestDispatcher("/ManageApplications.jsp");
+		if (session.getAttribute("userid").equals("admin")) {
+			refreshAttributes(request);
+			view = request.getRequestDispatcher("/ManageApplications.jsp");
+		} else {
+			refreshAttributes(request);
+			view = request.getRequestDispatcher("/StudentView.jsp");
+		}
 		view.forward(request, response);
 	}
 
@@ -164,6 +172,7 @@ public class Home extends HttpServlet {
 		default:
 			HttpSession session = request.getSession(true);
 			RequestDispatcher view;
+			session.getAttribute("userid");
 			if (session.getAttribute("userid").equals("admin")) {
 				refreshAttributes(request);
 				view = request.getRequestDispatcher("/ManageApplications.jsp");

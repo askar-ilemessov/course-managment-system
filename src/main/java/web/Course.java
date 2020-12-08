@@ -70,34 +70,40 @@ public class Course extends HttpServlet {
 			database = mongoClient.getDatabase("CMS");
 			MongoCollection<Document> courses = database.getCollection("courses");
 
-		
-		    BasicDBObject query = new BasicDBObject();
-		    query.put("course_name", request.getParameter("viewCourse"));
-		    
-		    FindIterable<Document> course = courses.find(query);
-		    
-		    
-		    for (Document c : course) {
-//		    	System.out.println(c);
-		    	List<Document> list = (List<Document>)c.get("assignments");
-		    	request.setAttribute("assignments", list);
-		    	 for (Document assignment : list) {
-		    		 MongoCollection<Document> users = database.getCollection("users");
-		    		 BasicDBObject userQuery = new BasicDBObject();
-		    		 HttpSession session = request.getSession(true);
-		    		 userQuery.put("name", session.getAttribute("userid"));
-		    		 
-		    		 users.updateOne(query, new Document("$set", new Document(assignment)));
-		    	 }
-		    }
-		    
-		    request.setAttribute("course", course);
-			
+			if (request.getParameterMap().containsKey("deregisterCourse")) {
+				//remove class from reg_courses, change capacity + 1
+				RequestDispatcher view = request.getRequestDispatcher("/home");
+				view.forward(request, response);
+				
+			} else {
+				BasicDBObject query = new BasicDBObject();
+			    query.put("course_name", request.getParameter("viewCourse"));
+			    
+			    FindIterable<Document> course = courses.find(query);
+			    
+			    
+			    for (Document c : course) {
+//			    	System.out.println(c);
+			    	List<Document> list = (List<Document>)c.get("assignments");
+			    	request.setAttribute("assignments", list);
+			    	 for (Document assignment : list) {
+			    		 MongoCollection<Document> users = database.getCollection("users");
+			    		 BasicDBObject userQuery = new BasicDBObject();
+			    		 HttpSession session = request.getSession(true);
+			    		 userQuery.put("name", session.getAttribute("userid"));
+			    		 
+			    		 users.updateOne(query, new Document("$set", new Document(assignment)));
+			    	 }
+			    }
+			    
+			    request.setAttribute("course", course);
+				
+			RequestDispatcher view = request.getRequestDispatcher("/CoursePage.jsp");
+			view.forward(request, response);
+			}
 		} catch (Exception e) {
 			
 		}
-		RequestDispatcher view = request.getRequestDispatcher("/CoursePage.jsp");
-		view.forward(request, response);
 	}
 
 	/**

@@ -140,6 +140,9 @@ body {
 								<td><button
 									type="submit" class="btn btn-primary" name="viewCourse"
 									value="<%=course.get("name")%>"><i class="fa fa-eye" data-toggle="tooltip" title="viewCourse"></i></button>
+									<button
+									type="submit" class="btn btn-danger" name="deregisterCourse"
+									value="<%=course.get("name")%>"><i class="fa fa-trash" data-toggle="tooltip" title="courseName"></i></button>
 								</td>
 
 							</tr>
