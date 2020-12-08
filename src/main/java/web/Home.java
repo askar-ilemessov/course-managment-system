@@ -195,6 +195,19 @@ public class Home extends HttpServlet {
 	public void deleteAccount(String delAccName, MongoDatabase db) {
 		//remove all student from all class lists they are reg in
 		MongoCollection<Document> accounts = db.getCollection("users");
+		MongoCollection<Document> courses = database.getCollection("courses");
+	
+		BasicDBObject fields = new BasicDBObject("class_list", 
+		        new BasicDBObject( "student_name", delAccName));
+	    BasicDBObject update = new BasicDBObject("$pull",fields);
+	    
+	    //incrementing capacity by one, since we deregister user from all courses
+	    BasicDBObject newDocument = new BasicDBObject().append("$inc", new BasicDBObject().append("capacity", 1));
+		courses.updateMany(fields, newDocument);
+	    
+	    //deregistering user from all courses he registered in
+	    courses.updateMany(fields, update);
+	    //deleting student's existence in system
 		accounts.deleteOne(Filters.eq("name", delAccName));
 		
 	}
