@@ -64,8 +64,7 @@ public class RegisterCourse extends HttpServlet {
 
 		}
 		
-		
-		String course_code = request.getParameter("course_code");
+		String course_code = request.getParameter("courseSelection");
 		HttpSession session = request.getSession(true);
 		String uname = (String) session.getAttribute("userid");
 		
