@@ -197,6 +197,8 @@ public class Home extends HttpServlet {
 		MongoCollection<Document> accounts = db.getCollection("users");
 		MongoCollection<Document> courses = database.getCollection("courses");
 	
+		
+		
 		BasicDBObject fields = new BasicDBObject("class_list", 
 		        new BasicDBObject( "student_name", delAccName));
 	    BasicDBObject update = new BasicDBObject("$pull",fields);

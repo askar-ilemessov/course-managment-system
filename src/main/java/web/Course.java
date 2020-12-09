@@ -14,6 +14,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.bson.Document;
+import org.bson.conversions.Bson;
 import org.bson.types.ObjectId;
 
 import com.mongodb.BasicDBObject;
@@ -24,6 +25,7 @@ import com.mongodb.client.FindIterable;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoCursor;
 import com.mongodb.client.MongoDatabase;
+import com.mongodb.client.model.Filters;
 
 /**
  * Servlet implementation class Applications
@@ -69,9 +71,18 @@ public class Course extends HttpServlet {
 			mongoClient = new MongoClient(connectionString);
 			database = mongoClient.getDatabase("CMS");
 			MongoCollection<Document> courses = database.getCollection("courses");
+			MongoCollection<Document> accounts = database.getCollection("users");
 
 			if (request.getParameterMap().containsKey("deregisterCourse")) {
-				//remove class from reg_courses, change capacity + 1
+				//remove class from reg_courses, change capacity + 1, and remove student from course class_list
+				
+				HttpSession session = request.getSession(true);
+				String name = (String) session.getAttribute("userid");
+				String courseName = (String) request.getParameter("deregisterCourse");
+				
+				dropCourse(name,courseName);
+	    	
+				
 				RequestDispatcher view = request.getRequestDispatcher("/home");
 				view.forward(request, response);
 				
@@ -104,6 +115,38 @@ public class Course extends HttpServlet {
 		} catch (Exception e) {
 			
 		}
+	}
+	
+	public void dropCourse(String name, String courseName) {
+		MongoCollection<Document> courses = database.getCollection("courses");
+		MongoCollection<Document> accounts = database.getCollection("users");
+		
+		Bson query = new Document().append("name", name);
+		Bson fields = new Document().append("reg_courses", new Document().append( "name", courseName));
+		Bson update = new Document("$pull",fields);
+
+		accounts.updateOne( query, update );
+		
+		
+		
+		
+		
+		Bson query2 = new Document().append("course_name", courseName);
+		Bson fields2 = new Document().append("class_list", new Document().append( "student_name", name));
+		Bson update2 = new Document("$pull",fields2);
+		courses.updateOne(query2, update2);
+		
+	    
+	    //incrementing capacity by one, since we deregister user from  courses
+	    BasicDBObject newDocument = new BasicDBObject().append("$inc", new BasicDBObject().append("capacity", 1));
+		courses.updateOne(query2, newDocument);
+	    
+	   
+		
+		
+		
+		
+		
 	}
 
 	/**
