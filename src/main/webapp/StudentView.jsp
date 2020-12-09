@@ -60,7 +60,7 @@ body {
 						<div class="col-6"></div>
 					</div>
 				</div>
-				<form  action="RegisterCourse" method="post">
+				<form action="RegisterCourse" method="post">
 					<table class="table table-striped table-hover">
 						<thead class="thead-dark">
 							<tr align="center">
@@ -89,15 +89,33 @@ body {
 								<td><%=s.get("term")%></td>
 								<td><%=s.get("capacity")%></td>
 
-								<td> </td>
-								
+								<td></td>
+
 							</tr>
 							<%}%>
 						</tbody>
 
 					</table>
-					<input type="text" id="courseCode" name="course_code" placeholder="Corse Code" class="form-control" required> 
-					<input type="submit" name="Register" class= "btn btn-info" value= "submit" > 
+					<div>
+					<div class ="row" style="float:right">
+					<div>
+					<select class="browser-default custom-select" id="courseSelection" name="courseSelection" style="width: 300px">
+		
+						<option selected>Select Course</option>
+						<%
+							for (Document s : std) {
+							%>
+							<option value="<%=s.get("course_code")%>" ><%=s.get("course_code")%></option>
+						<%}%>
+
+					</select>
+					</div>
+					<div>
+					<input type="submit" name="Register" class="btn btn-primary"
+						value="Register">
+					</div>
+					</div>
+					</div>
 				</form>
 			</div>
 		</div>
