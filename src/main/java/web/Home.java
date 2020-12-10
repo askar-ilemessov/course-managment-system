@@ -14,6 +14,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.bson.Document;
+import org.bson.conversions.Bson;
 import org.bson.types.ObjectId;
 
 import com.mongodb.BasicDBObject;
@@ -188,6 +189,17 @@ public class Home extends HttpServlet {
 	public void deleteCourse(String delCourseName, MongoDatabase db) {
 		//remove course from reg course in students
 		MongoCollection<Document> courses = db.getCollection("courses");
+		MongoCollection<Document> accounts = database.getCollection("users");
+
+		Document filter = new Document();
+		BasicDBObject fields = new BasicDBObject("reg_courses", 
+		        new BasicDBObject( "name", delCourseName));
+	    BasicDBObject update = new BasicDBObject("$pull",fields);
+		
+
+		accounts.updateMany(filter, update);
+		
+		
 		courses.deleteOne(Filters.eq("course_name", delCourseName));
 		
 	}
@@ -202,13 +214,14 @@ public class Home extends HttpServlet {
 		BasicDBObject fields = new BasicDBObject("class_list", 
 		        new BasicDBObject( "student_name", delAccName));
 	    BasicDBObject update = new BasicDBObject("$pull",fields);
+	    //deregistering user from all courses he registered in
+	    courses.updateMany(fields, update);
 	    
 	    //incrementing capacity by one, since we deregister user from all courses
 	    BasicDBObject newDocument = new BasicDBObject().append("$inc", new BasicDBObject().append("capacity", 1));
 		courses.updateMany(fields, newDocument);
 	    
-	    //deregistering user from all courses he registered in
-	    courses.updateMany(fields, update);
+	    
 	    //deleting student's existence in system
 		accounts.deleteOne(Filters.eq("name", delAccName));
 		
