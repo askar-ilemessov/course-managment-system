@@ -8,15 +8,15 @@ Scenario: Register in a course
 	Given a course with the course code "TEST" exists
 	When I input "TEST" as the course code
 	And I press register
-	Then I am registered in "STU"
+	Then I am registered in "TEST"
 
 #21
 Scenario: Course is full
 	Given a course with the course code "TEST_FULL" exists
-	Given I input "TEST" as the course code
+	Given I input "TEST_FULL" as the course code
 	And the capacity is full
 	And I press register
-	Then I am not registered in "TEST"
+	Then I am not registered in "TEST_FULL"
 
 
 #28

@@ -72,7 +72,7 @@ public class StudentSteps {
 
 	@Then("^I am not registered in \"([^\"]*)\"$")
 	public void i_am_not_registered_in(String arg1) throws Exception {
-		//assertFalse(checkDatabase(course_code));
+		assertFalse(checkDatabase(course_code));
 	}
 
 	@Given("^I am enrolled in \"([^\"]*)\"$")
@@ -96,15 +96,7 @@ public class StudentSteps {
 
 	private void fillCapacity(String course_code) {
 		MongoCollection<Document> courses = database.getCollection("courses");
-		BasicDBObject whereQuery = new BasicDBObject();
-		System.out.println(course_code + "----------------------------------------------------------------------------");
-		whereQuery.put("course_code", course_code);
-		
-		FindIterable<Document> cursor = courses.find(whereQuery);
-		for(Document c: cursor) {
-			System.out.println(c + "----------------------------------------------------------------------------");
-		}
-		
+	
 		courses.findOneAndUpdate(Filters.eq("course_code", course_code), Updates.set("capacity", 0));
 	}
 	

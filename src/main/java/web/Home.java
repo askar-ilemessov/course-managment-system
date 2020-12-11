@@ -189,7 +189,7 @@ public class Home extends HttpServlet {
 	public void deleteCourse(String delCourseName, MongoDatabase db) {
 		//remove course from reg course in students
 		MongoCollection<Document> courses = db.getCollection("courses");
-		MongoCollection<Document> accounts = database.getCollection("users");
+		MongoCollection<Document> accounts = db.getCollection("users");
 
 		Document filter = new Document();
 		BasicDBObject fields = new BasicDBObject("reg_courses", 

@@ -87,6 +87,7 @@ public class RegisterCourse extends HttpServlet {
 
 	public void registerCourse(String course_code, String uname, MongoDatabase db) {
 
+		if (seatsAvailable(course_code, db)) {
 		MongoCollection<Document> users = db.getCollection("users");
 		MongoCollection<Document> courses = db.getCollection("courses");
 
@@ -107,11 +108,28 @@ public class RegisterCourse extends HttpServlet {
 		courses.updateOne(Filters.eq("course_code", course_code), new Document().append("$push", new Document("class_list",
 				new Document( "student_name", uname))));
 		
+		}
 	}
 	
 
 
 	
+	private boolean seatsAvailable(String course_code, MongoDatabase db) {
+		MongoCollection<Document> courses = db.getCollection("courses");
+		BasicDBObject query = new BasicDBObject();
+		query.put("course_code", course_code);
+
+		FindIterable<Document> course = courses.find(query);
+		//System.out.println(cursor);
+		for (Document c : course) {
+			if ((int)c.get("capacity") > 0) {
+				return true;
+			} else return false;
+		}
+		return true;
+	}
+
+
 	private static FindIterable<Document> findCourseByName(MongoCollection<Document> courses, String name) {
 		BasicDBObject whereQuery = new BasicDBObject();
 		whereQuery.put("course_code", name);
