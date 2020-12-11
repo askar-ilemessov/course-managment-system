@@ -2,6 +2,7 @@ package web;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.List;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -87,7 +88,7 @@ public class RegisterCourse extends HttpServlet {
 
 	public void registerCourse(String course_code, String uname, MongoDatabase db) {
 
-		if (seatsAvailable(course_code, db)) {
+		if (seatsAvailable(course_code, db) && notAlreadyRegistered(course_code, uname, db)) {
 		MongoCollection<Document> users = db.getCollection("users");
 		MongoCollection<Document> courses = db.getCollection("courses");
 
@@ -97,7 +98,7 @@ public class RegisterCourse extends HttpServlet {
 		for (Document course : courseInfo) {
 
 			users.updateOne(Filters.eq("name", uname), new Document().append("$push", new Document("reg_courses",
-					new Document("name", course.getString("course_name")).append("term", course.getString("term")).append("assignments", new ArrayList<>()))));
+					new Document("name", course.getString("course_name")).append("course_code", course.getString("course_code")).append("term", course.getString("term")).append("assignments", new ArrayList<>()))));
 			
 		}
 		BasicDBObject newDocument =
@@ -114,6 +115,26 @@ public class RegisterCourse extends HttpServlet {
 
 
 	
+	private boolean notAlreadyRegistered(String course_code, String uname, MongoDatabase db) {
+		MongoCollection<Document> students = db.getCollection("users");
+		BasicDBObject query = new BasicDBObject();
+		query.put("name", uname);
+
+		FindIterable<Document> student = students.find(query);
+		//System.out.println(cursor);
+		for (Document c : student) {
+			List<Document> reg_courses = (List<Document>) c.get("reg_courses");
+			for (Document course : reg_courses) {
+				if (course.get("course_code").equals(course_code)) {
+					System.out.println("Already registered in "+ course_code);
+					return false;
+				}
+			}
+		}
+		return true;
+	}
+
+
 	private boolean seatsAvailable(String course_code, MongoDatabase db) {
 		MongoCollection<Document> courses = db.getCollection("courses");
 		BasicDBObject query = new BasicDBObject();
