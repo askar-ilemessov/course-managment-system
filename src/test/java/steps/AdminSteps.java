@@ -99,7 +99,7 @@ public class AdminSteps {
 	private boolean checkDatabase(String arg1, String arg2) {
 		//check database to see if arg1 exists
 		MongoCollection<Document> courses = database.getCollection("courses");
-		MongoCollection<Document> students = database.getCollection("students");
+		MongoCollection<Document> students = database.getCollection("users");
 
 		BasicDBObject query = new BasicDBObject();
 	    query.put("course_name", arg1);

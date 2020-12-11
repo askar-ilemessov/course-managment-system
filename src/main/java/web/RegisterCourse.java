@@ -74,7 +74,7 @@ public class RegisterCourse extends HttpServlet {
 		for (Document course : courseInfo) {
 			
 			if(course.getInteger("capacity") != 0) {
-				registerCourse(course_code, uname);
+				registerCourse(course_code, uname, database);
 			}else {
 				System.out.println("The course is full");
 			}
@@ -85,10 +85,10 @@ public class RegisterCourse extends HttpServlet {
 	}
 	
 
-	public void registerCourse(String course_code, String uname) {
+	public void registerCourse(String course_code, String uname, MongoDatabase db) {
 
-		MongoCollection<Document> users = database.getCollection("users");
-		MongoCollection<Document> courses = database.getCollection("courses");
+		MongoCollection<Document> users = db.getCollection("users");
+		MongoCollection<Document> courses = db.getCollection("courses");
 
 		FindIterable<Document> courseInfo = findCourseByName(courses, course_code);
 		FindIterable<Document> userInfo = findUserByName(users, uname);

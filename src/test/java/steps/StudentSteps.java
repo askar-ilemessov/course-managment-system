@@ -2,6 +2,10 @@ package steps;
 import web.*;
 import static org.junit.Assert.*;
 
+import java.util.List;
+
+import javax.servlet.http.HttpSession;
+
 import org.bson.Document;
 
 import com.mongodb.BasicDBObject;
@@ -11,15 +15,14 @@ import com.mongodb.client.FindIterable;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoCursor;
 import com.mongodb.client.MongoDatabase;
+import com.mongodb.client.model.Filters;
+import com.mongodb.client.model.Updates;
 
 import cucumber.api.java.en.*;
 
 public class StudentSteps {
-	String course_name;
 	String course_code;
-	String section;
-	String prof_name;
-	String term;
+	
 	
 	private static MongoClient mongoClient;
 	private static MongoClientURI connectionString = new MongoClientURI(
@@ -27,7 +30,7 @@ public class StudentSteps {
 	private static MongoDatabase database = null;
 	
 	CreateCourse courseManager = new CreateCourse();
-	Home admin = new Home();
+	RegisterCourse student = new RegisterCourse();
 	
 	@Given("^I am on the Student page$")
 	public void i_am_on_the_Student_page() throws Exception {
@@ -41,95 +44,87 @@ public class StudentSteps {
 			System.out.println("Failed to Connected" + e);
 		}
 	}
-
-	@When("^I input \"([^\"]*)\" \"([^\"]*)\" \"([^\"]*)\" \"([^\"]*)\" \"([^\"]*)\"$")
-	public void i_input(String arg1, String arg2, String arg3, String arg4, String arg5) throws Exception {
-		this.course_name = arg1;
-		this.course_code = arg2;
-		this.section = arg3;
-		this.prof_name = arg4;
-		this.term =arg5;
+	@Given("^a course with the course code \"([^\"]*)\" exists$")
+	public void a_course_with_the_course_code_exists(String arg1) throws Exception {
+	   courseManager.addCourse(arg1, arg1, "test",	"test", "test");
 	}
 
-	@When("^I press submit$")
-	public void I_press_submit() throws Exception {
-	    courseManager.addCourse(course_name, course_code, section,	prof_name, term);
+	@When("^I input \"([^\"]*)\" as the course code$")
+	public void i_input_as_the_course_code(String arg1) throws Exception {
+	  this.course_code = arg1;
 	}
 
-	@Then("^the \"([^\"]*)\" course should be created$")
-	public void the_course_should_be_created(String arg1) throws Exception {
-		assertTrue(checkDatabase(arg1, "Courses"));
+	@When("^I press register$")
+	public void i_press_register() throws Exception {
+	    student.registerCourse(course_code, "Test Student", database);
 	}
 
-	@Given("^there is a student named \"([^\"]*)\"$")
-	public void there_is_a_student_named(String arg1) throws Exception {
-	   Applications addStudent = new Applications();
-	   addStudent.acceptApplication(arg1, database);
+	@Then("^I am registered in \"([^\"]*)\"$")
+	public void i_am_registered_in(String arg1) throws Exception {
+	  checkDatabase(course_code);
+	  assertTrue(checkDatabase(course_code));
 	}
 
-	@Given("^\"([^\"]*)\" is registered in \"([^\"]*)\"$")
-	public void is_registered_in(String arg1, String arg2) throws Exception {
+	@Given("^the capacity is full$")
+	public void the_capacity_is_full() throws Exception {
+	  fillCapacity(this.course_code);
+	}
+
+	@Then("^I am not registered in \"([^\"]*)\"$")
+	public void i_am_not_registered_in(String arg1) throws Exception {
+		//assertFalse(checkDatabase(course_code));
+	}
+
+	@Given("^I am enrolled in \"([^\"]*)\"$")
+	public void i_am_enrolled_in(String arg1) throws Exception {
 	   
+	  
 	}
 
-	@When("^I delete \"([^\"]*)\" from \"([^\"]*)\"$" )
-	public void i_delete(String arg1, String arg2) throws Exception {
-		if (arg2.equals("Courses")) {
-			admin.deleteCourse(arg1, database);
-		} else {
-			admin.deleteAccount(arg1, database);
-		}
+	@When("^I drop \"([^\"]*)\"$")
+	public void i_drop(String arg1) throws Exception {
+	   
+	    //student.dropCourse()
 	}
 
-	@Then("^\"([^\"]*)\" should be removed from the \"([^\"]*)\" database$")
-	public void should_be_removed_from_the_database(String arg1, String arg2) throws Exception {
-	    assertFalse(checkDatabase(arg1,arg2));
-	}
-
-	@Then("^\"([^\"]*)\" should be removed from \"([^\"]*)\" class list$")
-	public void should_be_removed_from_class_list(String arg1, String arg2) throws Exception {
-	   assertFalse(checkDatabase(arg1,arg2));
-	}
-
-	@Then("^\"([^\"]*)\" should no longer be registered in \"([^\"]*)\"$")
-	public void should_no_longer_be_registered_in(String arg1, String arg2) throws Exception {
-		assertFalse(checkDatabase(arg1,arg2));
+	@Then("^I am not in the class list for \"([^\"]*)\"$")
+	public void i_am_not_in_the_class_list_for(String arg1) throws Exception {
+	   
+	   
 	}
 	
-	private boolean checkDatabase(String arg1, String arg2) {
-		//check database to see if arg1 exists
+
+	private void fillCapacity(String course_code) {
 		MongoCollection<Document> courses = database.getCollection("courses");
-		MongoCollection<Document> students = database.getCollection("students");
-
-		BasicDBObject query = new BasicDBObject();
-	    query.put("course_name", arg1);
-	  
-	    FindIterable<Document> docsIterable = courses.find(query);
-	    
-	    switch (arg1) {
-	    case "Courses":
-	    	 docsIterable = courses.find(query);
-	    	 break;
-	    	 
-	    case "Students" :
-	    	docsIterable = students.find(query);
-	    	break;
-	    }
-	   
-		try (MongoCursor<Document> iterator = docsIterable.iterator()) {
-			int count = 0;
-			while (iterator.hasNext() && count < 1) {
-				iterator.next();
-				count++;
-			}
-			
-			if (count > 0) {
-				return true;
-			} else {
-				return false;
-			}
+		BasicDBObject whereQuery = new BasicDBObject();
+		System.out.println(course_code + "----------------------------------------------------------------------------");
+		whereQuery.put("course_code", course_code);
+		
+		FindIterable<Document> cursor = courses.find(whereQuery);
+		for(Document c: cursor) {
+			System.out.println(c + "----------------------------------------------------------------------------");
 		}
-
+		
+		courses.findOneAndUpdate(Filters.eq("course_code", course_code), Updates.set("capacity", 0));
 	}
+	
+	private boolean checkDatabase(String arg1) {
+		MongoCollection<Document> students = database.getCollection("users");
+		
+		BasicDBObject query = new BasicDBObject();
+	    query.put("name", "Test Student");
+	    
+		FindIterable<Document> student = students.find(query);
 
+		 for (Document c : student ) {
+		    	List<Document> list = (List<Document>)c.get("reg_courses");
+		    	for (Document course  : list ) {
+		    		if (course.get("name").equals(course_code)) {
+		    			return true;
+		    		} else return false;
+		    	}
+		    
+		    }
+		 return false;
+	}
 }
