@@ -13,12 +13,15 @@ import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.Enumeration;
+import java.util.List;
 
 import org.bson.Document;
 import org.bson.types.ObjectId;
 
+import com.mongodb.BasicDBObject;
 import com.mongodb.MongoClient;
 import com.mongodb.MongoClientURI;
+import com.mongodb.client.FindIterable;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
 import com.mongodb.client.model.Filters;
@@ -53,18 +56,37 @@ public class CreateCourse extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 		
+		mongoClient = new MongoClient(connectionString);
+		database = mongoClient.getDatabase("CMS");
+		
 		String course_name = request.getParameter("course_name");
 		String course_code = request.getParameter("course_code");
 		String section = request.getParameter("section");
 		String prof_name = request.getParameter("prof_name");
 		String term = request.getParameter("term");
 		
-		addCourse(course_name, course_code, section, prof_name, term);
+		if (courseNotDuplicate(course_code, database)) {
+			addCourse(course_name, course_code, section, prof_name, term, database);
+		}
 		
 		mongoClient.close();
 		
 
 		doGet(request, response);
+	}
+
+	private boolean courseNotDuplicate(String course_code, MongoDatabase db) {
+		MongoCollection<Document> courses = db.getCollection("courses");
+
+		FindIterable<Document> courseList = courses.find();
+		//System.out.println(cursor);
+		for (Document c : courseList) {
+				if (c.get("course_code").equals(course_code)) {
+					System.out.println(course_code + " already exists");
+					return false;
+				}
+		}
+		return true;
 	}
 
 	class Assignment {
@@ -77,12 +99,10 @@ public class CreateCourse extends HttpServlet {
 		}
 	}
 	
-	public void addCourse(String course_name, String course_code, String section, String prof_name, String term) {
+	public void addCourse(String course_name, String course_code, String section, String prof_name, String term, MongoDatabase db) {
 		
 		try {
-			mongoClient = new MongoClient(connectionString);
-			database = mongoClient.getDatabase("CMS");
-			MongoCollection<Document> courses = database.getCollection("courses");
+			MongoCollection<Document> courses = db.getCollection("courses");
 			
 			ArrayList<Assignment> assignments  = new ArrayList<>();
 			assignments.add(new Assignment("Assignment 1", new Date(System.currentTimeMillis() + 604800000).toString()));
