@@ -136,6 +136,7 @@ body {
 						<thead class="thead-dark">
 							<tr align="center">
 								
+								
 								<th>Course Name</th>
 								<th>Course Term</th>
 								<th>Actions</th>
@@ -152,6 +153,7 @@ body {
 							
 							%>
 							<tr align="center">
+								
 								
 								<td><%=course.getString("name")%></td>
 								<td><%=course.getString("term")%></td>

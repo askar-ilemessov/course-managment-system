@@ -91,19 +91,25 @@ public class CreateCourse extends HttpServlet {
 			
 			Document newCourse = new Document("_id", new ObjectId());
 			newCourse.append("course_name", course_name).append("course_code", course_code).append("section", section).append("prof_name", prof_name).append("term", term).append("capacity", 100).append("assignments", new ArrayList<>());
+			
+			if(courses.count(Filters.eq("course_code",course_code)) == 0L ) {
+				courses.insertOne(newCourse);
+				
+				courses.updateOne(Filters.eq("course_code", course_code), new Document().append("$push", new Document("assignments",
+						new Document( "name", "Assignment 1"))));
+				courses.updateOne(Filters.eq("course_code", course_code), new Document().append("$push", new Document("assignments",
+						new Document( "name", "Assignment 2"))));
+				courses.updateOne(Filters.eq("course_code", course_code), new Document().append("$push", new Document("assignments",
+						new Document( "name", "Assignment 3"))));
+				
 
+				System.out.println("Successfully added " + course_name +  " to courses Database");
+			}else {
+				System.out.println("Course with this course_code" + course_code + " already exists");
+				System.out.println("Course not added");
+			}
 			
-			courses.insertOne(newCourse);
 			
-			courses.updateOne(Filters.eq("course_code", course_code), new Document().append("$push", new Document("assignments",
-					new Document( "name", "Assignment 1"))));
-			courses.updateOne(Filters.eq("course_code", course_code), new Document().append("$push", new Document("assignments",
-					new Document( "name", "Assignment 2"))));
-			courses.updateOne(Filters.eq("course_code", course_code), new Document().append("$push", new Document("assignments",
-					new Document( "name", "Assignment 3"))));
-			
-
-			System.out.println("Successfully added " + course_name +  " to courses Database");
 
 		} catch (Exception e) {
 			System.out.println("Unsuccessfully" + e);
