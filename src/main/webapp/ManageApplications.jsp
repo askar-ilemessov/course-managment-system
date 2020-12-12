@@ -66,9 +66,11 @@ body {
 					<thead class="thead-dark">
 						<tr align="center">
 							<th>Name</th>
+							<th>Lastname</th>
 							<th>Email</th>
-							<th>Account Type</th>
-							<th>Phone</th>
+							<th>Password</th>
+							
+							
 							<th>Actions</th>
 						</tr>
 					</thead>
@@ -77,10 +79,12 @@ body {
         				for(Document s:std){%>
 						<tr align="center">
 							
+							<td><%=s.get("name2")%></td>
+							<td><%=s.get("lastname")%></td>
 							<td><%=s.get("name")%></td>
-							<td><%=s.get("email")%></td>
-							<td>Student</td>
-							<td>(480) 631-2097</td>
+							<td><%=s.get("password")%></td>
+							
+							
 							<td><button
 												type="submit" class="btn btn-danger" name="deleteAccount"
 												value="<%=s.get("name")%>"><i class="fa fa-trash" data-toggle="tooltip" title="Delete"></i></button>

@@ -3,6 +3,8 @@ package web;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Enumeration;
+import java.util.Iterator;
+import java.util.List;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -14,10 +16,15 @@ import javax.servlet.http.HttpServletResponse;
 import org.bson.Document;
 import org.bson.types.ObjectId;
 
+import com.mongodb.BasicDBObject;
+import com.mongodb.DBCursor;
+import com.mongodb.DBObject;
 import com.mongodb.MongoClient;
 import com.mongodb.MongoClientURI;
+import com.mongodb.client.FindIterable;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
+import com.mongodb.client.model.Filters;
 
 /**
  * Servlet implementation class Applications
@@ -60,7 +67,8 @@ public class Applications extends HttpServlet {
 			mongoClient = new MongoClient(connectionString);
 			database = mongoClient.getDatabase("CMS");
 			MongoCollection<Document> applications = database.getCollection("applications");
-			String reqUname = request.getParameter("ConfirmApp"); 
+			String reqUname = request.getParameter("ConfirmApp");
+			
 			if (request.getParameterMap().containsKey("ConfirmApp")) {
 				acceptApplication(reqUname, database);		
 			} 	
@@ -73,11 +81,22 @@ public class Applications extends HttpServlet {
 	}
 
 	public void acceptApplication(String reqUname, MongoDatabase db) {
-		MongoCollection<Document> students = db.getCollection("users");
-		Document newCourse = new Document("_id", new ObjectId());
-		newCourse.append("name", reqUname).append("password", "password").append("reg_courses", new ArrayList<>());
-
-		students.insertOne(newCourse);
+		MongoCollection<Document> students = db.getCollection("users");	
+		MongoCollection<Document> applications = db.getCollection("applications");
+		
+		String name, lastname;
+	    
+		Document newUser = new Document("_id", new ObjectId());
+		
+		for (Document user : applications.find(Filters.eq("email", reqUname))) {
+			if(user.getString("email").equals(reqUname)) {
+				lastname = user.getString("lastname");
+				name = user.getString("name");
+				newUser.append("name", reqUname).append("password", "password").append("name2", name).append("lastname", lastname).append("reg_courses", new ArrayList<>());
+			}
+		}
+		
+		students.insertOne(newUser);
 	}
 	
 	
