@@ -158,19 +158,6 @@ public class Home extends HttpServlet {
 			break;
 			
 			
-		case "registerCourse":
-			try {
-				
-				//RequestDispatcher view = request.getRequestDispatcher("/ManageApplications.jsp");
-				//view.forward(request, response);
-				//String s = request.getParameter("registerCourse");
-				System.out.println(request.getParameter("registerCourse"));
-				System.out.println("clicked");
-			} catch (Exception e) {
-				
-			}
-			break;
-			
 		default:
 			HttpSession session = request.getSession(true);
 			RequestDispatcher view;
