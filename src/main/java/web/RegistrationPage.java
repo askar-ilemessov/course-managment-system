@@ -106,8 +106,14 @@ public class RegistrationPage extends HttpServlet {
 		MongoCollection<Document> applications = database.getCollection("applications");
 		BasicDBObject query = new BasicDBObject();
 	    query.put("name", name);
-		long account = applications.countDocuments(query);
-		if (account > 0) {
+		long application = applications.countDocuments(query);
+		
+		MongoCollection<Document> acccounts = database.getCollection("users");
+		BasicDBObject query2 = new BasicDBObject();
+	    query.put("name", name);
+		long account = applications.countDocuments(query2);
+		
+		if (account > 0 || application > 0) {
 			return true;
 		} else return false;
 	}

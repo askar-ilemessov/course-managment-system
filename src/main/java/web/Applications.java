@@ -91,10 +91,7 @@ public class Applications extends HttpServlet {
 
 		for (Document user : applications.find(Filters.eq("email", reqUname))) {
 			if(user.getString("email").equals(reqUname)) {
-				lastname = user.getString("lastname");
-				name = user.getString("name");
-				newUser.append("name", reqUname).append("password", "password").append("name2", name).append("lastname", lastname).append("accType", user.getString("accType")).append("reg_courses", new ArrayList<>());
-				//System.out.println(user.getString("accType"));
+				newUser.append("name", reqUname).append("password", "password").append("name2", user.getString("name")).append("lastname", user.getString("lastname")).append("accType", user.getString("accType")).append("reg_courses", new ArrayList<>());
 			}
 		}
 

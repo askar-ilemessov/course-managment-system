@@ -13,9 +13,8 @@ Scenario: Register in a course
 #T35
 Scenario: Student already registered
 	Given a course with the course code "TEST_REGISTERED" exists
-	And I am registered in "TEST_REGISTERED"
+	And I am enrolled in "TEST_REGISTERED"
 	When I input "TEST_REGISTERED" as the course code
-	And I press register
 	Then I am not registered again into "TEST_REGISTERED"
 
 #T37
@@ -23,7 +22,6 @@ Scenario: Course is full
 	Given a course with the course code "TEST_FULL" exists
 	Given I input "TEST_FULL" as the course code
 	And the capacity is full
-	And I press register
 	Then I am not registered in "TEST_FULL"
 
 #T48

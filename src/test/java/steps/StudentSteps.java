@@ -31,6 +31,7 @@ public class StudentSteps {
 	
 	CreateCourse courseManager = new CreateCourse();
 	RegisterCourse student = new RegisterCourse();
+	Course course = new Course();
 	
 	@Given("^I am on the Student page$")
 	public void i_am_on_the_Student_page() throws Exception {
@@ -77,20 +78,22 @@ public class StudentSteps {
 
 	@Given("^I am enrolled in \"([^\"]*)\"$")
 	public void i_am_enrolled_in(String arg1) throws Exception {
-	   
-	  
+		student.registerCourse(arg1, "Test Student", database);
 	}
 
 	@When("^I drop \"([^\"]*)\"$")
 	public void i_drop(String arg1) throws Exception {
-	   
-	    //student.dropCourse()
+	    course.dropCourse("Test Student", arg1, database);
 	}
 
 	@Then("^I am not in the class list for \"([^\"]*)\"$")
 	public void i_am_not_in_the_class_list_for(String arg1) throws Exception {
-	   
-	   
+	   assertFalse(checkClassList(arg1));
+	}
+	
+	@Then("^I am not registered again into \"([^\"]*)\"$")
+	public void i_am_not_registered_again_into(String arg1) throws Exception {
+	    assertFalse(student.notAlreadyRegistered(arg1, "Test Student", database));
 	}
 	
 
@@ -118,5 +121,23 @@ public class StudentSteps {
 		    
 		    }
 		 return false;
+	}
+	
+	private boolean checkClassList(String arg1) {
+		MongoCollection<Document> courses = database.getCollection("courses");
+		BasicDBObject query = new BasicDBObject();
+		query.put("course_code", arg1);
+
+		FindIterable<Document> course = courses.find(query);
+		//System.out.println(cursor);
+		for (Document c : course) {
+			List<Document> classlist = (List<Document>) c.get("class_list");
+			for (Document student : classlist) {
+				if (student.get("student_name").equals("Test_Student")) {
+					return true;
+				}
+			}
+		}
+		return false;
 	}
 }

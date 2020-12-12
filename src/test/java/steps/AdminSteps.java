@@ -3,6 +3,7 @@ import web.*;
 import static org.junit.Assert.*;
 
 import org.bson.Document;
+import org.bson.types.ObjectId;
 
 import com.mongodb.BasicDBObject;
 import com.mongodb.MongoClient;
@@ -84,7 +85,19 @@ public class AdminSteps {
 	@Given("^there is a student named \"([^\"]*)\"$")
 	public void there_is_a_student_named(String arg1) throws Exception {
 	   Applications addStudent = new Applications();
+	   RegistrationPage register = new RegistrationPage();
+	   
+	   MongoCollection<Document> applications = database.getCollection("applications");
+	   
+	   Document newUser = new Document("_id", new ObjectId());
+	   newUser.append("name", "Test").append("lastname", "Student").append("email", "Test Student").append("accType", "Student");
+	   applications.insertOne(newUser);
+	   
 	   addStudent.acceptApplication(arg1, database);
+	   
+	   BasicDBObject query = new BasicDBObject();
+	    query.put("email", "Test Student");
+	   applications.deleteOne(query);
 	}
 
 	@Given("^\"([^\"]*)\" is registered in \"([^\"]*)\"$")

@@ -80,7 +80,7 @@ public class Course extends HttpServlet {
 				String name = (String) session.getAttribute("userid");
 				String courseName = (String) request.getParameter("deregisterCourse");
 				
-				dropCourse(name,courseName);
+				dropCourse(name,courseName,database);
 	    	
 				
 				RequestDispatcher view = request.getRequestDispatcher("/home");
@@ -117,9 +117,9 @@ public class Course extends HttpServlet {
 		}
 	}
 	
-	public void dropCourse(String name, String courseName) {
-		MongoCollection<Document> courses = database.getCollection("courses");
-		MongoCollection<Document> accounts = database.getCollection("users");
+	public void dropCourse(String name, String courseName, MongoDatabase db) {
+		MongoCollection<Document> courses = db.getCollection("courses");
+		MongoCollection<Document> accounts = db.getCollection("users");
 		
 		Bson query = new Document().append("name", name);
 		Bson fields = new Document().append("reg_courses", new Document().append( "name", courseName));

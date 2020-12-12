@@ -105,6 +105,7 @@ public class Home extends HttpServlet {
 					MongoCollection<Document> collection = database.getCollection("users");
 					List<Document> users = (List<Document>) collection.find().into(new ArrayList<Document>());
 					for (Document user : users) {
+						System.out.println(user);
 						if(user.getString("name").equals(uname)) {
 							List<Document> regCourse = (List<Document>) user.get("reg_courses");
 							request.setAttribute("courses2", regCourse);
