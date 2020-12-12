@@ -70,7 +70,8 @@ public class Home extends HttpServlet {
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		//String uname = "";
+		System.out.println("POST");
+
 		switch (getReqType(request)) {
 		
 		//LOGIN AUTH
@@ -224,6 +225,7 @@ public class Home extends HttpServlet {
 	    
 	    //deleting student's existence in system
 		accounts.deleteOne(Filters.eq("name", delAccName));
+		System.out.println("Deleting " + delAccName);
 		
 	}
 

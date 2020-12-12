@@ -1,5 +1,7 @@
 package web;
 
+
+
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.Enumeration;
@@ -14,6 +16,7 @@ import javax.servlet.http.HttpServletResponse;
 import org.bson.Document;
 import org.bson.types.ObjectId;
 
+import com.mongodb.BasicDBObject;
 import com.mongodb.MongoClient;
 import com.mongodb.MongoClientURI;
 import com.mongodb.client.MongoCollection;
@@ -56,40 +59,57 @@ public class RegistrationPage extends HttpServlet {
 //			System.out.println("Parameter Name - " + paramName + ", Value - " + request.getParameter(paramName));
 //		}
 //
-		RequestDispatcher view = request.getRequestDispatcher("/");
-		view.forward(request, response);
-
+	
 		String name = request.getParameter("name");
 		String lastname = request.getParameter("lastName");
 		String email = request.getParameter("email");
 		String accType = request.getParameter("accountType");
 
-		try {
-//			MongoCollection<Document> studentCol = database.getCollection("students");
-//			MongoCollection<Document> profCol = database.getCollection("professors");
-			MongoCollection<Document> applications = database.getCollection("applications");
+		if(!accountExists(name)) {
+			try {
+//				MongoCollection<Document> studentCol = database.getCollection("students");
+//				MongoCollection<Document> profCol = database.getCollection("professors");
+				MongoCollection<Document> applications = database.getCollection("applications");
+				
+				Document newUser = new Document("_id", new ObjectId());
+				newUser.append("name", name).append("lastname", lastname).append("email", email).append("accType", accType);
+
+//				if (accType.equals("Student")) {
+//					studentCol.insertOne(newUser);
+//				} else if (accType.equals("Professor")) {
+//					profCol.insertOne(newUser);
+//				}
+				
+				applications.insertOne(newUser);
 			
-			Document newUser = new Document("_id", new ObjectId());
-			newUser.append("name", name).append("lastname", lastname).append("email", email).append("accType", accType);
 
-//			if (accType.equals("Student")) {
-//				studentCol.insertOne(newUser);
-//			} else if (accType.equals("Professor")) {
-//				profCol.insertOne(newUser);
-//			}
+				System.out.println("Successfully added " + name + " " + lastname + " to " + accType + " Database");
+
+			} catch (Exception e) {
+				System.out.println("Unsuccessfully" + e);
+			}
+		} else {
+			request.setAttribute("accountExists", "true");
 			
-			applications.insertOne(newUser);
-
-			System.out.println("Successfully added " + name + " " + lastname + " to " + accType + " Database");
-
-		} catch (Exception e) {
-			System.out.println("Unsuccessfully" + e);
 		}
+		
+		RequestDispatcher view = request.getRequestDispatcher("/index.jsp");
+		view.forward(request, response);
 		
 		mongoClient.close();
 
 		// System.out.println(" " + name + " lastname" + " " + email + " "+ accType);
 
+	}
+
+	private boolean accountExists(String name) {
+		MongoCollection<Document> applications = database.getCollection("applications");
+		BasicDBObject query = new BasicDBObject();
+	    query.put("name", name);
+		long account = applications.countDocuments(query);
+		if (account > 0) {
+			return true;
+		} else return false;
 	}
 
 }

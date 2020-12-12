@@ -14,6 +14,7 @@ import javax.servlet.http.HttpServletResponse;
 import org.bson.Document;
 import org.bson.types.ObjectId;
 
+import com.mongodb.BasicDBObject;
 import com.mongodb.MongoClient;
 import com.mongodb.MongoClientURI;
 import com.mongodb.client.MongoCollection;
@@ -63,6 +64,9 @@ public class Applications extends HttpServlet {
 			String reqUname = request.getParameter("ConfirmApp"); 
 			if (request.getParameterMap().containsKey("ConfirmApp")) {
 				acceptApplication(reqUname, database);		
+				BasicDBObject query = new BasicDBObject();
+			    query.put("email", request.getParameter("ConfirmApp"));
+				applications.deleteOne(query);
 			} 	
 			applications.deleteOne(new Document("_id", new ObjectId(request.getParameter("DenyApp"))));
 		} catch (Exception e) {

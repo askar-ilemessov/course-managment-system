@@ -76,6 +76,11 @@ button:hover {
 				<strong>Incorrect Login.</strong> Try Again.
 			</div>
       		<% } %>
+      		 <%if (request.getAttribute("accountExists") == "true") { %>
+         <div class="alert alert-danger" id="error" role="alert">
+				<strong>Account Already Exists.</strong>
+			</div>
+      		<% } %>
 			<label for="uname"><b>Username</b></label>
 			<div class="form-group">
 				<input type="text" placeholder="Enter Username" name="uname"
@@ -95,9 +100,6 @@ button:hover {
 		<div class="card" style="background-color: #f1f1f1; text-align: right">
 			<div>
 				Don't have an account? <a href="/cms/RegistrationPage.html">Register</a>
-			</div>
-			<div>	
-				Create Course? <a href="/cms/createCourse.html">Create Course</a>
 			</div>
 			
 		</div>
