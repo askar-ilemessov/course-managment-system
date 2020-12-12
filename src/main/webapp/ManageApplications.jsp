@@ -69,6 +69,7 @@ body {
 							<th>Lastname</th>
 							<th>Email</th>
 							<th>Password</th>
+							<th>Account type</th>
 							
 							
 							<th>Actions</th>
@@ -83,6 +84,7 @@ body {
 							<td><%=s.get("lastname")%></td>
 							<td><%=s.get("name")%></td>
 							<td><%=s.get("password")%></td>
+							<td><%=s.get("accType")%></td>
 							
 							
 							<td><button

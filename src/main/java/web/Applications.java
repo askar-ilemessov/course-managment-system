@@ -92,7 +92,8 @@ public class Applications extends HttpServlet {
 			if(user.getString("email").equals(reqUname)) {
 				lastname = user.getString("lastname");
 				name = user.getString("name");
-				newUser.append("name", reqUname).append("password", "password").append("name2", name).append("lastname", lastname).append("reg_courses", new ArrayList<>());
+				newUser.append("name", reqUname).append("password", "password").append("name2", name).append("lastname", lastname).append("accType", user.getString("accType")).append("reg_courses", new ArrayList<>());
+				//System.out.println(user.getString("accType"));
 			}
 		}
 		
