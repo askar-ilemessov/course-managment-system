@@ -147,6 +147,7 @@ body {
 							<tr align="center">
 								
 								
+								<th>Course Code</th>
 								<th>Course Name</th>
 								<th>Course Term</th>
 								<th>Actions</th>
@@ -164,9 +165,10 @@ body {
 							%>
 							<tr align="center">
 								
-								
+								<td><%=course.getString("course_code")%></td>
 								<td><%=course.getString("name")%></td>
 								<td><%=course.getString("term")%></td>
+								
 								<td><button
 									type="submit" class="btn btn-primary" name="viewCourse"
 									value="<%=course.get("name")%>"><i class="fa fa-eye" data-toggle="tooltip" title="viewCourse"></i></button>
