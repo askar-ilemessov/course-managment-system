@@ -131,7 +131,8 @@ body {
 							<th>Course Code</th>
 							<th>Course Name</th>
 							<th>Professor Assigned</th>
-							<th>Scheduled Time</th>
+							<th>Term</th>
+							<th>Capacity</th>
 							<th>Actions</th>
 						</tr>
 					</thead>
@@ -143,6 +144,7 @@ body {
 							<td><%=s.get("course_name")%></td>
 							<td><%=s.get("prof_name")%></td>
 							<td><%=s.get("term")%></td>
+							<td><%=s.get("capacity")%></td>
 							<td><button
 												type="submit" class="btn btn-danger" name="deleteCourse"
 												value="<%=s.get("course_name")%>"><i class="fa fa-trash" data-toggle="tooltip" title="Delete"></i></button></td>

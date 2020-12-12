@@ -110,7 +110,7 @@ public class CreateCourse extends HttpServlet {
 			assignments.add(new Assignment("Assignment 3", new Date(System.currentTimeMillis() + 1814400000).toString()));
 			
 			Document newCourse = new Document("_id", new ObjectId());
-			newCourse.append("course_name", course_name).append("course_code", course_code).append("section", section).append("prof_name", prof_name).append("term", term).append("capacity", 100).append("assignments", new ArrayList<>());
+			newCourse.append("course_name", course_name).append("course_code", course_code).append("section", section).append("prof_name", prof_name).append("term", term).append("capacity", 2).append("assignments", new ArrayList<>());
 			
 			if(courses.count(Filters.eq("course_code",course_code)) == 0L ) {
 				courses.insertOne(newCourse);
