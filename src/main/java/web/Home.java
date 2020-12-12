@@ -297,6 +297,9 @@ public class Home extends HttpServlet {
 	}
 	
 	public void refreshAttributes(HttpServletRequest request) {
+		mongoClient = new MongoClient(connectionString);
+		database = mongoClient.getDatabase("CMS");
+		
 		MongoCollection<Document> accounts = database.getCollection("users");
 		MongoCollection<Document> courses = database.getCollection("courses");
 		MongoCollection<Document> applications = database.getCollection("applications");

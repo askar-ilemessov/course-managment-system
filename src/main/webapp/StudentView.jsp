@@ -50,6 +50,16 @@ body {
 		<div class="tab-pane fade show active" id="courses1" role="tabpanel"
 			aria-labelledby="courses-tab">
 			<div class="container">
+			<%if (request.getAttribute("courseFull") == "true") { %>
+         <div class="alert alert-danger" id="error" role="alert">
+				<strong>Course Full.</strong> Unable To Register. 
+			</div>
+			<% } %>
+			<%if (request.getAttribute("alreadyReg") == "true") { %>
+         <div class="alert alert-danger" id="error" role="alert">
+				<strong>Already Registered.</strong> Unable To Register. 
+			</div>
+			<% } %>
 				<div class="table-title">
 					<div class="row">
 						<div class="col-6 pt-2">

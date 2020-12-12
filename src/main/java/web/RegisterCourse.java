@@ -74,11 +74,13 @@ public class RegisterCourse extends HttpServlet {
 
 		for (Document course : courseInfo) {
 			
-			if(course.getInteger("capacity") != 0) {
-				registerCourse(course_code, uname, database);
-			}else {
-				System.out.println("The course is full");
-			}
+			if (seatsAvailable(course_code, database)) {
+				if (notAlreadyRegistered(course_code, uname, database)) {
+					registerCourse(course_code, uname, database);
+	
+				} else request.setAttribute("alreadyReg", "true");
+			
+			} else  request.setAttribute("courseFull", "true");			
 		}
 		
 		RequestDispatcher view = request.getRequestDispatcher("/home");
@@ -87,29 +89,26 @@ public class RegisterCourse extends HttpServlet {
 	
 
 	public void registerCourse(String course_code, String uname, MongoDatabase db) {
+				MongoCollection<Document> users = db.getCollection("users");
+				MongoCollection<Document> courses = db.getCollection("courses");
 
-		if (seatsAvailable(course_code, db) && notAlreadyRegistered(course_code, uname, db)) {
-		MongoCollection<Document> users = db.getCollection("users");
-		MongoCollection<Document> courses = db.getCollection("courses");
+				FindIterable<Document> courseInfo = findCourseByName(courses, course_code);
+				FindIterable<Document> userInfo = findUserByName(users, uname);
 
-		FindIterable<Document> courseInfo = findCourseByName(courses, course_code);
-		FindIterable<Document> userInfo = findUserByName(users, uname);
+				for (Document course : courseInfo) {
 
-		for (Document course : courseInfo) {
-
-			users.updateOne(Filters.eq("name", uname), new Document().append("$push", new Document("reg_courses",
-					new Document("name", course.getString("course_name")).append("course_code", course.getString("course_code")).append("term", course.getString("term")).append("assignments", new ArrayList<>()))));
-			
-		}
-		BasicDBObject newDocument =
-				new BasicDBObject().append("$inc",
-				new BasicDBObject().append("capacity", -1));
-		courses.updateOne(new BasicDBObject().append("course_code", course_code), newDocument);
+					users.updateOne(Filters.eq("name", uname), new Document().append("$push", new Document("reg_courses",
+							new Document("name", course.getString("course_name")).append("course_code", course.getString("course_code")).append("term", course.getString("term")).append("assignments", new ArrayList<>()))));
+					
+				}
+				BasicDBObject newDocument =
+						new BasicDBObject().append("$inc",
+						new BasicDBObject().append("capacity", -1));
+				courses.updateOne(new BasicDBObject().append("course_code", course_code), newDocument);
+				
+				courses.updateOne(Filters.eq("course_code", course_code), new Document().append("$push", new Document("class_list",
+						new Document( "student_name", uname))));	
 		
-		courses.updateOne(Filters.eq("course_code", course_code), new Document().append("$push", new Document("class_list",
-				new Document( "student_name", uname))));
-		
-		}
 	}
 	
 

@@ -43,6 +43,11 @@ body {
 		<div class="tab-pane fade show active" id="accounts" role="tabpanel"
 			aria-labelledby="accounts-tab">
 			<div class="container">
+			 <%if (request.getAttribute("courseExists") == "true") { %>
+         <div class="alert alert-danger" id="error" role="alert">
+				<strong>Course Already Exists.</strong>
+			</div>
+      		<% } %>
 				<div class="table-title">
 					<div class="row">
 						<div class="col-6 pt-2">

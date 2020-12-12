@@ -67,7 +67,7 @@ public class CreateCourse extends HttpServlet {
 		
 		if (courseNotDuplicate(course_code, database)) {
 			addCourse(course_name, course_code, section, prof_name, term, database);
-		}
+		} else  request.setAttribute("courseExists", "true");
 		
 		mongoClient.close();
 		
