@@ -46,7 +46,7 @@ public class StudentSteps {
 	}
 	@Given("^a course with the course code \"([^\"]*)\" exists$")
 	public void a_course_with_the_course_code_exists(String arg1) throws Exception {
-	   courseManager.addCourse(arg1, arg1, "test",	"test", "test");
+	   courseManager.addCourse(arg1, arg1, "test",	"test", "test", database);
 	}
 
 	@When("^I input \"([^\"]*)\" as the course code$")

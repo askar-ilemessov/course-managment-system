@@ -27,6 +27,7 @@ public class AdminSteps {
 	private static MongoDatabase database = null;
 	
 	CreateCourse courseManager = new CreateCourse();
+	RegisterCourse course = new RegisterCourse();
 	Home admin = new Home();
 	
 	@Given("^I am on the Admin page$")
@@ -42,23 +43,42 @@ public class AdminSteps {
 		}
 	}
 
-	@When("^I input \"([^\"]*)\" \"([^\"]*)\" \"([^\"]*)\" \"([^\"]*)\" \"([^\"]*)\"$")
-	public void i_input(String arg1, String arg2, String arg3, String arg4, String arg5) throws Exception {
+	@When("^I input \"([^\"]*)\" \"([^\"]*)\" \"([^\"]*)\" \"([^\"]*)\"$")
+	public void i_input(String arg1, String arg2, String arg3, String arg5) throws Exception {
 		this.course_name = arg1;
 		this.course_code = arg2;
 		this.section = arg3;
-		this.prof_name = arg4;
 		this.term =arg5;
+	}
+	
+
+	@When("^I assign \"([^\"]*)\" as the professor$")
+	public void i_assign_as_the_professor(String arg1) throws Exception {
+	   this.prof_name = arg1;
+	}
+	
+	@Given("^\"([^\"]*)\" exists$")
+	public void exists(String arg1) throws Exception {
+		assertTrue(checkDatabase(arg1, "Courses"));
 	}
 
 	@When("^I press submit$")
 	public void I_press_submit() throws Exception {
-	    courseManager.addCourse(course_name, course_code, section,	prof_name, term);
+	    courseManager.addCourse(course_name, course_code, section,	prof_name, term, database);
 	}
 
 	@Then("^the \"([^\"]*)\" course should be created$")
 	public void the_course_should_be_created(String arg1) throws Exception {
 		assertTrue(checkDatabase(arg1, "Courses"));
+	}
+	
+	@Then("^the \"([^\"]*)\" course should not be created$")
+	public void the_course_should_not_be_created(String arg1) throws Exception {
+		MongoCollection<Document> courses = database.getCollection("courses");
+		BasicDBObject query = new BasicDBObject();
+	    query.put("course_name", arg1);
+		long numberOfCreated = courses.countDocuments(query);
+		assertTrue(numberOfCreated < 2);
 	}
 
 	@Given("^there is a student named \"([^\"]*)\"$")
@@ -69,7 +89,7 @@ public class AdminSteps {
 
 	@Given("^\"([^\"]*)\" is registered in \"([^\"]*)\"$")
 	public void is_registered_in(String arg1, String arg2) throws Exception {
-	   
+	   assertTrue(course.notAlreadyRegistered(arg2, arg1, database));
 	}
 
 	@When("^I delete \"([^\"]*)\" from \"([^\"]*)\"$" )

@@ -115,7 +115,7 @@ public class RegisterCourse extends HttpServlet {
 
 
 	
-	private boolean notAlreadyRegistered(String course_code, String uname, MongoDatabase db) {
+	public boolean notAlreadyRegistered(String course_code, String uname, MongoDatabase db) {
 		MongoCollection<Document> students = db.getCollection("users");
 		BasicDBObject query = new BasicDBObject();
 		query.put("name", uname);

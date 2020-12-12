@@ -3,14 +3,22 @@ Feature: Student
 Background:
 	Given I am on the Student page
 
-#21
+#T33
 Scenario: Register in a course
 	Given a course with the course code "TEST" exists
 	When I input "TEST" as the course code
 	And I press register
 	Then I am registered in "TEST"
+	
+#T35
+Scenario: Student already registered
+	Given a course with the course code "TEST_REGISTERED" exists
+	And I am registered in "TEST_REGISTERED"
+	When I input "TEST_REGISTERED" as the course code
+	And I press register
+	Then I am not registered again into "TEST_REGISTERED"
 
-#21
+#T37
 Scenario: Course is full
 	Given a course with the course code "TEST_FULL" exists
 	Given I input "TEST_FULL" as the course code
@@ -18,14 +26,13 @@ Scenario: Course is full
 	And I press register
 	Then I am not registered in "TEST_FULL"
 
+#T48
+Scenario: Submit a deliverable
+	Given I am enrolled in "TEST"
 
-#28
+#T38
 Scenario: Drop a course
 	Given I am enrolled in "TEST"
 	When I drop "TEST"
-	Then I am not registered in "STU"
+	Then I am not registered in "TEST"
 	And I am not in the class list for "TEST"
-
-#30
-Scenario: Submit a deliverable
-
