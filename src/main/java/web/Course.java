@@ -182,7 +182,7 @@ public class Course extends HttpServlet {
 		} catch (Exception e) {
 			
 		}
-		RequestDispatcher view = request.getRequestDispatcher("/StudentView.jsp");
+		RequestDispatcher view = request.getRequestDispatcher("/home");
 		view.forward(request, response);
 	}
 

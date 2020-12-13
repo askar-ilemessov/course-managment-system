@@ -99,7 +99,7 @@ button:hover {
 
 		<div class="card" style="background-color: #f1f1f1; text-align: right">
 			<div>
-				Don't have an account? <a href="/cms/RegistrationPage.html">Register</a>
+				Don't have an account? <a href="/cms/RegistrationPage.jsp">Register</a>
 			</div>
 			
 		</div>

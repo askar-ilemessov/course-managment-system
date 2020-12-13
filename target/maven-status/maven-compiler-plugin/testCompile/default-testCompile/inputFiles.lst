@@ -1,6 +1,8 @@
-C:\Users\16134\eclipse-workspace-ee\cms\src\test\java\selenium\EnvironmentManager.java
-C:\Users\16134\eclipse-workspace-ee\cms\src\test\java\selenium\LoginWebPageTest.java
-C:\Users\16134\eclipse-workspace-ee\cms\src\test\java\selenium\RegistrationPageTest.java
-C:\Users\16134\eclipse-workspace-ee\cms\src\test\java\steps\LoginSteps.java
-C:\Users\16134\eclipse-workspace-ee\cms\src\test\java\runner\TestRunner.java
-C:\Users\16134\eclipse-workspace-ee\cms\src\test\java\selenium\ManageApplicationsPageTest.java
+D:\Users\Austin\git\Course-Management-System\src\test\java\steps\LoginSteps.java
+D:\Users\Austin\git\Course-Management-System\src\test\java\runner\TestRunner.java
+D:\Users\Austin\git\Course-Management-System\src\test\java\selenium\EnvironmentManager.java
+D:\Users\Austin\git\Course-Management-System\src\test\java\selenium\ManageApplicationsPageTest.java
+D:\Users\Austin\git\Course-Management-System\src\test\java\steps\StudentSteps.java
+D:\Users\Austin\git\Course-Management-System\src\test\java\selenium\RegistrationPageTest.java
+D:\Users\Austin\git\Course-Management-System\src\test\java\steps\AdminSteps.java
+D:\Users\Austin\git\Course-Management-System\src\test\java\selenium\LoginWebPageTest.java
