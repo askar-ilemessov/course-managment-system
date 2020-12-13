@@ -1,5 +1,6 @@
 package web;
 
+import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Enumeration;
@@ -183,6 +184,32 @@ public class Course extends HttpServlet {
 		}
 		RequestDispatcher view = request.getRequestDispatcher("/StudentView.jsp");
 		view.forward(request, response);
+	}
+
+	public void submitDeliverable(String student, String courseName, MongoDatabase db, File file) {
+
+		MongoCollection<Document> courses = db.getCollection("courses");
+
+	
+	    BasicDBObject query = new BasicDBObject();
+	    List<BasicDBObject> obj = new ArrayList<BasicDBObject>();
+	    obj.add(new BasicDBObject("name", courseName));
+	    
+	    FindIterable<Document> course = courses.find(query);
+	    
+	    
+	    for (Document c : course) {
+//	    	System.out.println(c);
+	    	List<Document> list = (List<Document>)c.get("assignments");
+	    	
+	    	 for (Document assignment : list) {
+	    		 MongoCollection<Document> users = db.getCollection("users");
+	    		 BasicDBObject userQuery = new BasicDBObject();
+	    	
+	    	 }
+	    }
+	    
+		
 	}
 
 }

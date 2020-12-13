@@ -5,7 +5,7 @@ Background:
 
 #T71
 Scenario: request account creation
-	Given I input "Test" "Student" "test@email.com" "Student"
+	Given I apply for "Test" "Student" "test@email.com" "Student" 
 	When I click apply
 	Then an application for "Test" should be created
 	

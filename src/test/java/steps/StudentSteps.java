@@ -2,6 +2,7 @@ package steps;
 import web.*;
 import static org.junit.Assert.*;
 
+import java.io.File;
 import java.util.List;
 
 import javax.servlet.http.HttpSession;
@@ -96,6 +97,16 @@ public class StudentSteps {
 	    assertFalse(student.notAlreadyRegistered(arg1, "Test Student", database));
 	}
 	
+	@Given("^I submit an assignment to \"([^\"]*)\"$")
+	public void i_submit_an_assignment_to(String arg1) throws Exception {
+		File file = new File("filename.txt");
+	    course.submitDeliverable("Test Student", arg1, database, file);
+	}
+
+	@Then("^my deliverable is submitted$")
+	public void my_deliverable_is_submitted() throws Exception {
+	    assertFalse(checkDatabase("Test Student"));
+	}
 
 	private void fillCapacity(String course_code) {
 		MongoCollection<Document> courses = database.getCollection("courses");

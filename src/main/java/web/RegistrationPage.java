@@ -65,7 +65,7 @@ public class RegistrationPage extends HttpServlet {
 		String email = request.getParameter("email");
 		String accType = request.getParameter("accountType");
 
-		if(!accountExists(name)) {
+		if(!accountExists(name, database)) {
 			try {
 //				MongoCollection<Document> studentCol = database.getCollection("students");
 //				MongoCollection<Document> profCol = database.getCollection("professors");
@@ -102,16 +102,14 @@ public class RegistrationPage extends HttpServlet {
 
 	}
 
-	private boolean accountExists(String name) {
-		MongoCollection<Document> applications = database.getCollection("applications");
+	public boolean accountExists(String name, MongoDatabase db) {
+		MongoCollection<Document> applications = db.getCollection("applications");
 		BasicDBObject query = new BasicDBObject();
 	    query.put("name", name);
 		long application = applications.countDocuments(query);
 		
-		MongoCollection<Document> acccounts = database.getCollection("users");
-		BasicDBObject query2 = new BasicDBObject();
-	    query.put("name", name);
-		long account = applications.countDocuments(query2);
+		MongoCollection<Document> accounts = db.getCollection("users");
+		long account = accounts.countDocuments(query);
 		
 		if (account > 0 || application > 0) {
 			return true;

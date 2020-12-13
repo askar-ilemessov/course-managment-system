@@ -27,6 +27,8 @@ Scenario: Course is full
 #T48
 Scenario: Submit a deliverable
 	Given I am enrolled in "TEST"
+	And I submit an assignment to "TEST"
+	Then my deliverable is submitted
 
 #T38
 Scenario: Drop a course

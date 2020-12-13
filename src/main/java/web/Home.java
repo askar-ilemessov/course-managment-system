@@ -323,4 +323,12 @@ public class Home extends HttpServlet {
 	}
 	}
 
+	public boolean logout() {
+//		HttpServletRequest request = null;
+//		HttpSession session = request.getSession(true);
+//		session.invalidate();
+		return true;
+		
+	}
+
 }
